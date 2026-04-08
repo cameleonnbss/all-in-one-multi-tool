@@ -12,10 +12,10 @@
 ## ⚡ Quick Start
 
 ```bash
-git clone https://github.com/cameleonnbss/camzzz-multitool.git
-cd camzzz-multitool
+git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
+cd all-in-one-multi-tool
 pip install -r requirements.txt
-python3 main.py
+python3 multi-tool.py
 ```
 
 > Missing `requests` or `colorama`? The script auto-installs them on first run.
