@@ -139,7 +139,6 @@ This toolkit is provided **for educational and authorized testing purposes only.
 
 **camzzz**
 
----
-```
+Discord : cameleonmortis
+GitHub : [https://github.com/cameleonnbss](https://github.com/cameleonnbss)
 
-Both files are ready to drop straight into your repo root. Let me know if you want the README tweaked to V7 branding instead, or if you've got updated module lists to fold in.
