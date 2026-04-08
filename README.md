@@ -12,7 +12,7 @@
 ## ⚡ Quick Start
 
 ```bash
-git clone https://github.com/youruser/camzzz-multitool.git
+git clone https://github.com/cameleonnbss/camzzz-multitool.git
 cd camzzz-multitool
 pip install -r requirements.txt
 python3 main.py
