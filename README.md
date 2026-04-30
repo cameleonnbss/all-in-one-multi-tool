@@ -34,7 +34,7 @@ python3 multi-tool.py
 git clone -b v5 https://github.com/cameleonnbss/all-in-one-multi-tool.git
 cd all-in-one-multi-tool
 pip install -r requirements.txt
-python3 multi-tooV5-fixed.py
+python3 multi-tooV5.py
 ```
 
 > Missing dependencies are auto-installed on first run if you skip the `pip install` step.
