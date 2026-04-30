@@ -64,11 +64,18 @@ def animate_banner(lines, color=C, delay=0.08):
 
 def check_dependencies():
     required = ["requests", "beautifulsoup4", "colorama", "dnspython"]
-    for dep in required:
+   def check_dependencies():
+    deps = {
+        "requests": "requests",
+        "bs4": "beautifulsoup4",
+        "colorama": "colorama",
+        "dns": "dnspython",
+    }
+    for import_name, pip_name in deps.items():
         try:
-            __import__(dep.replace("-", "_"))
+            __import__(import_name)
         except ImportError:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", dep])
+            subprocess.check_call([sys.executable, "-m", "pip", "install", pip_name, "--break-system-packages"])
 
 class DDoSFlood:
     def __init__(self):
