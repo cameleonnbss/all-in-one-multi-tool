@@ -23,7 +23,7 @@ Two versions are available on this repo.
 
 ### v3.0 — Stable
 ```bash
-git clone -b v3 https://github.com/cameleonnbss/all-in-one-multi-tool.git
+git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
 cd all-in-one-multi-tool
 pip install -r requirements.txt
 python3 multi-tool.py
@@ -31,7 +31,7 @@ python3 multi-tool.py
 
 ### v5.0 — Latest (33 modules)
 ```bash
-git clone -b v5 https://github.com/cameleonnbss/all-in-one-multi-tool.git
+git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
 cd all-in-one-multi-tool
 pip install -r requirements.txt
 python3 multi-tooV5.py
