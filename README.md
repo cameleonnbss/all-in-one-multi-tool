@@ -20,12 +20,93 @@ Some modules may still be rough around the edges — feedback welcome.
 ## ⚡ Quick Start
 
 ### v5.0 — Latest (40 modules)
+Voici une version adaptée et propre des instructions d’installation selon l’OS :
+
+---
+
+# 🛠️ Installation – ALL IN ONE TOOL
+
+## ⚡ Prérequis (tous systèmes)
+
+* Python 3 installé
+* pip installé
+* Git installé
+
+---
+
+# 🐧 Linux (Ubuntu / Debian / Kali)
+
 ```bash
+sudo apt update && sudo apt install git python3 python3-pip -y
+
 git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
 cd all-in-one-multi-tool
-pip install -r requirements.txt
-python3 multi-tooV5-fixed.py
+
+pip3 install -r requirements.txt --break-system-packages
+
+python3 multi-tooV5.py
 ```
+
+or make a venv :
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+
+# 🍎 macOS
+
+```bash
+brew install git python
+
+git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
+cd all-in-one-multi-tool
+
+python3 -m venv venv
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+python3 multi-tooV5.py
+```
+
+---
+
+# 🪟 Windows (PowerShell)
+
+```powershell
+winget install Git.Git
+winget install Python.Python.3
+
+git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
+cd all-in-one-multi-tool
+
+python -m venv venv
+venv\Scripts\activate
+
+pip install -r requirements.txt
+
+python multi-tooV5.py
+```
+
+---
+
+# 📱 Termux (Android)
+
+```bash
+pkg update && pkg upgrade -y
+pkg install git python -y
+
+git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
+cd all-in-one-multi-tool
+
+pip install -r requirements.txt
+
+python multi-tooV5.py
+```
+
 
 ### v3.0 — Stable
 ```bash
