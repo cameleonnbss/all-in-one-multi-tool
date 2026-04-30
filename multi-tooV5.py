@@ -61,10 +61,8 @@ def animate_banner(lines, color=C, delay=0.08):
     for line in lines:
         print(f"{color}{line}{SR}")
         time.sleep(delay)
-
+        
 def check_dependencies():
-    required = ["requests", "beautifulsoup4", "colorama", "dnspython"]
-   def check_dependencies():
     deps = {
         "requests": "requests",
         "bs4": "beautifulsoup4",
