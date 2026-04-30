@@ -33,6 +33,30 @@ TOOLS_DIR = os.path.join(HOME_DIR, "tools")
 os.makedirs(TOOLS_DIR, exist_ok=True)
 HOSTNAME = os.uname().nodename if hasattr(os, 'uname') else socket.gethostname()
 
+def is_termux():
+    """Detect Termux / Android environment."""
+    if os.environ.get("TERMUX_VERSION"):
+        return True
+    prefix = os.environ.get("PREFIX", "")
+    if prefix.startswith("/data/data/com.termux"):
+        return True
+    if os.path.isdir("/data/data/com.termux"):
+        return True
+    return False
+
+def term_width(default=80):
+    try:
+        w = shutil.get_terminal_size(fallback=(default, 24)).columns
+        return w if w > 0 else default
+    except Exception:
+        return default
+
+def is_narrow():
+    """Small screens (Termux phone, tmux split) need compact layout."""
+    return term_width() < 80
+
+IS_TERMUX = is_termux()
+
 def random_ua():
     agents = [
         "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -930,6 +954,173 @@ class OSINTPro:
             self.google_dorks(target)
         pause()
 
+API_KEY_REGISTRY = {
+    "openrouter": {
+        "file":  ".openrouter_key",
+        "label": "OpenRouter (AI Chatbot)",
+        "url":   "https://openrouter.ai/keys",
+    },
+    "shodan": {
+        "file":  ".shodan_key",
+        "label": "Shodan (Search)",
+        "url":   "https://account.shodan.io",
+    },
+    "virustotal": {
+        "file":  ".virustotal_key",
+        "label": "VirusTotal (Virus Scanner)",
+        "url":   "https://www.virustotal.com/gui/my-apikey",
+    },
+}
+
+def _key_path(slug):
+    return os.path.join(TOOLS_DIR, API_KEY_REGISTRY[slug]["file"])
+
+def load_api_key(slug):
+    p = _key_path(slug)
+    if os.path.exists(p):
+        try:
+            with open(p, "r") as f:
+                return f.read().strip() or None
+        except Exception:
+            return None
+    return None
+
+def save_api_key(slug, key):
+    p = _key_path(slug)
+    try:
+        with open(p, "w") as f:
+            f.write(key.strip())
+        try:
+            os.chmod(p, 0o600)
+        except Exception:
+            pass
+        return True
+    except Exception as e:
+        print(f"{R}[!] Could not save key: {e}{SR}")
+        return False
+
+def delete_api_key(slug):
+    p = _key_path(slug)
+    if os.path.exists(p):
+        try:
+            os.remove(p)
+            return True
+        except Exception as e:
+            print(f"{R}[!] Could not delete: {e}{SR}")
+    return False
+
+def prompt_api_key(slug, allow_skip=True):
+    """Ask the user for a key. Returns the key or None."""
+    info = API_KEY_REGISTRY[slug]
+    print(f"\n{SY}[!] {info['label']} API key not set.{SR}")
+    print(f"{SC}[i] Get one at: {info['url']}{SR}")
+    prompt = f"{SG}[+] Paste key ({'Enter to skip' if allow_skip else 'required'}): {SR}"
+    k = input(prompt).strip()
+    if not k:
+        return None
+    if save_api_key(slug, k):
+        print(f"{SG}[+] Key saved.{SR}")
+    return k
+
+def api_keys_menu():
+    """Central manager — view / add / change / delete API keys any time."""
+    while True:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        boxed("API KEYS MANAGER", color=SC, padding=3)
+        print(f"\n{SY}[!] Stored keys:{SR}\n")
+        slugs = list(API_KEY_REGISTRY.keys())
+        for i, slug in enumerate(slugs, 1):
+            info = API_KEY_REGISTRY[slug]
+            key = load_api_key(slug)
+            if key:
+                masked = key[:4] + "…" + key[-4:] if len(key) > 10 else "***"
+                status_txt = f"{SG}set{SR}  ({masked})"
+            else:
+                status_txt = f"{R}missing{SR}"
+            print(f"  {SC}[{i}]{SR} {W}{info['label']:<28}{SR} {status_txt}")
+        print(f"  {SC}[0]{SR} Back to main menu")
+        print()
+        choice = input(f"{SG}[+] Select a key to manage: {SR}").strip()
+        if choice in ("0", "", "q"):
+            return
+        try:
+            idx = int(choice) - 1
+            if not (0 <= idx < len(slugs)):
+                print(f"{R}[-] Invalid{SR}"); time.sleep(1); continue
+        except ValueError:
+            print(f"{R}[-] Not a number{SR}"); time.sleep(1); continue
+
+        slug = slugs[idx]
+        info = API_KEY_REGISTRY[slug]
+        current = load_api_key(slug)
+        print(f"\n{SC}── {info['label']} ──{SR}")
+        print(f"  {SY}Get a key: {info['url']}{SR}")
+        print(f"  {SC}[1]{SR} {'Change' if current else 'Add'} key")
+        if current:
+            print(f"  {SC}[2]{SR} Show full key")
+            print(f"  {SC}[3]{SR} Delete key")
+        print(f"  {SC}[0]{SR} Back")
+        sub = input(f"{SG}[+] Action: {SR}").strip()
+        if sub == "1":
+            k = input(f"{SG}[+] Paste new key (Enter to cancel): {SR}").strip()
+            if k and save_api_key(slug, k):
+                print(f"{SG}[+] Key saved to {_key_path(slug)}{SR}")
+                time.sleep(1)
+        elif sub == "2" and current:
+            print(f"  {W}{current}{SR}")
+            pause()
+        elif sub == "3" and current:
+            ok = input(f"{SY}[?] Really delete this key? (y/N): {SR}").strip().lower()
+            if ok == "y":
+                if delete_api_key(slug):
+                    print(f"{SG}[+] Deleted.{SR}")
+                    time.sleep(1)
+
+def first_run_setup():
+    """On first launch, offer to configure API keys up-front (optional)."""
+    flag = os.path.join(TOOLS_DIR, ".setup_done")
+    if os.path.exists(flag):
+        return
+    os.system('cls' if os.name == 'nt' else 'clear')
+    boxed("FIRST-RUN SETUP", color=SC, padding=3)
+    print(f"\n{SY}Some modules use optional API keys.{SR}")
+    print(f"{SC}You can configure them now, or skip and set them later{SR}")
+    print(f"{SC}from the main menu ({W}[99] API Keys Manager{SC}).{SR}\n")
+    ans = input(f"{SG}[+] Configure keys now? (y/N): {SR}").strip().lower()
+    if ans == "y":
+        for slug in API_KEY_REGISTRY:
+            info = API_KEY_REGISTRY[slug]
+            if load_api_key(slug):
+                continue
+            print(f"\n{SC}── {info['label']} ──{SR}")
+            print(f"  {SY}Get one at: {info['url']}{SR}")
+            k = input(f"{SG}[+] Paste key (Enter to skip): {SR}").strip()
+            if k:
+                save_api_key(slug, k)
+                print(f"{SG}[+] Saved.{SR}")
+    try:
+        with open(flag, "w") as f:
+            f.write(str(int(time.time())))
+    except Exception:
+        pass
+
+MODULES_LIST = [
+    ("01", "DDoS Flood"),     ("02", "OSINT Pro"),      ("03", "XSS Injector"),
+    ("04", "SQL Injector"),   ("05", "Brute Force"),    ("06", "Vuln Scanner"),
+    ("07", "Network Scan"),   ("08", "Port Scanner"),   ("09", "DNS Enum"),
+    ("10", "Hash & Encode"),  ("11", "Crypto Tools"),   ("12", "AI Chatbot"),
+    ("13", "Social Media"),   ("14", "Web Hacking"),    ("15", "Phishing"),
+    ("16", "Rev Shell Gen"),  ("17", "WiFi Tools"),     ("18", "Metasploit"),
+    ("19", "Steganography"),  ("20", "JWT Tool"),       ("21", "Sub Takeover"),
+    ("22", "Shodan Search"),  ("23", "File + Virus"),   ("24", "Payload Gen"),
+    ("25", "ARP Spoofer"),    ("26", "CVE Scanner"),    ("27", "Wordlist Gen"),
+    ("28", "XXE Inject"),     ("29", "SSRF Scanner"),   ("30", "Packet Sniff"),
+    ("31", "Image Meta"),     ("32", "TechInt"),        ("33", "Phone Lookup"),
+    ("34", "Pub Cameras"),    ("35", "Paste Search"),   ("36", "ASN Lookup"),
+    ("37", "Wayback"),        ("38", "SSL Inspector"),  ("39", "Breach Check"),
+    ("40", "Hash Cracker"),
+]
+
 def show_banner():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -937,7 +1128,12 @@ def show_banner():
     WHITE = "\033[97m"
     RESET = "\033[0m"
 
-    ascii_art = f"""{BLUE}
+    width = term_width()
+    narrow = width < 80
+
+    # --- ASCII art: only on wide terminals ---
+    if width >= 100:
+        print(f"""{BLUE}
     ___       __       __          __  .__   __.      ______   .__   __.  _______    .___________.  ______     ______    __
    /   \\     |  |     |  |        |  | |  \\ |  |     /  __  \\  |  \\ |  | |   ____|   |           | /  __  \\   /  __  \\  |  |
   /  ^  \\    |  |     |  |        |  | |   \\|  |    |  |  |  | |   \\|  | |  |__      `---|  |----`|  |  |  | |  |  |  | |  |
@@ -946,72 +1142,52 @@ def show_banner():
 /__/     \\__\\ |_______||_______|   |__| |__| \\__|     \\______/  |__| \\__| |_______|       |__|      \\______/   \\______/  |_______|
 
 {WHITE}                         made by https://github.com/cameleonnbss{RESET}
-"""
+""")
+    else:
+        # Compact header for phones / Termux
+        title = " ALL IN ONE TOOL v5 "
+        sub = " github.com/cameleonnbss "
+        bar = "═" * min(width - 2, max(len(title), len(sub)) + 4)
+        print(f"{BLUE}╔{bar}╗{RESET}")
+        print(f"{BLUE}║{WHITE}{title.center(len(bar))}{BLUE}║{RESET}")
+        print(f"{BLUE}║{WHITE}{sub.center(len(bar))}{BLUE}║{RESET}")
+        print(f"{BLUE}╚{bar}╝{RESET}")
+        if IS_TERMUX:
+            print(f"{WHITE}  [Termux mode] compact layout active{RESET}")
 
-    col1 = [
-        ("01", "DDoS Flood"),
-        ("02", "OSINT Pro"),
-        ("03", "XSS Injector"),
-        ("04", "SQL Injector"),
-        ("05", "Brute Force"),
-        ("06", "Vuln Scanner"),
-        ("07", "Network Scan"),
-        ("08", "Port Scanner"),
-        ("09", "DNS Enum"),
-        ("10", "Hash & Encode"),
-    ]
-    col2 = [
-        ("11", "Crypto Tools"),
-        ("12", "AI Chatbot"),
-        ("13", "Social Media"),
-        ("14", "Web Hacking"),
-        ("15", "Phishing"),
-        ("16", "Rev Shell Gen"),
-        ("17", "WiFi Tools"),
-        ("18", "Metasploit"),
-        ("19", "Steganography"),
-        ("20", "JWT Tool"),
-    ]
-    col3 = [
-        ("21", "Sub Takeover"),
-        ("22", "Shodan Search"),
-        ("23", "File + Virus"),
-        ("24", "Payload Gen"),
-        ("25", "ARP Spoofer"),
-        ("26", "CVE Scanner"),
-        ("27", "Wordlist Gen"),
-        ("28", "XXE Inject"),
-        ("29", "SSRF Scanner"),
-        ("30", "Packet Sniff"),
-    ]
-    col4 = [
-        ("31", "Image Meta"),
-        ("32", "TechInt"),
-        ("33", "Phone Lookup"),
-        ("34", "Pub Cameras"),
-        ("35", "Paste Search"),
-        ("36", "ASN Lookup"),
-        ("37", "Wayback"),
-        ("38", "SSL Inspector"),
-        ("39", "Breach Check"),
-        ("40", "Hash Cracker"),
-    ]
+    # --- Modules grid: adapt number of columns to width ---
+    if width >= 100:
+        ncols = 4
+    elif width >= 70:
+        ncols = 3
+    elif width >= 45:
+        ncols = 2
+    else:
+        ncols = 1
+
+    label_w = 13 if ncols >= 3 else 16
+    cell_w = label_w + 6  # "[NN] " + label + padding
+    grid_w = cell_w * ncols + 2
 
     def cell(num, label):
-        return f"{WHITE}[{num}]{BLUE} {label:<15}"
+        return f"{WHITE}[{num}]{BLUE} {label:<{label_w}}"
 
-    banner_lines = [ascii_art]
-    banner_lines.append(f"{BLUE}╔══════════════════════════════════════════════════════════════════════════════════╗{RESET}")
-    for a, b, c, d in zip(col1, col2, col3, col4):
-        banner_lines.append(
-            f"{BLUE}║ {cell(*a)}{cell(*b)}{cell(*c)}{cell(*d)} {BLUE}║{RESET}"
-        )
-    banner_lines.append(f"{BLUE}╠══════════════════════════════════════════════════════════════════════════════════╣{RESET}")
-    banner_lines.append(f"{BLUE}║                                   {WHITE}[00]{BLUE} Exit                                      ║{RESET}")
-    banner_lines.append(f"{BLUE}╚══════════════════════════════════════════════════════════════════════════════════╝{RESET}")
-
-    for line in banner_lines:
-        print(line)
+    rows = (len(MODULES_LIST) + ncols - 1) // ncols
+    print(f"{BLUE}╔{'═' * grid_w}╗{RESET}")
+    for r in range(rows):
+        parts = []
+        for c in range(ncols):
+            idx = r + c * rows  # column-major so numbering reads top-to-bottom
+            if idx < len(MODULES_LIST):
+                parts.append(cell(*MODULES_LIST[idx]))
+            else:
+                parts.append(" " * cell_w)
+        line = "".join(parts)
+        print(f"{BLUE}║ {line}{BLUE}║{RESET}")
+    print(f"{BLUE}╠{'═' * grid_w}╣{RESET}")
+    footer = f"{WHITE}[99]{BLUE} API Keys   {WHITE}[00]{BLUE} Exit"
+    print(f"{BLUE}║ {footer}{' ' * max(0, grid_w - 24)}{BLUE}║{RESET}")
+    print(f"{BLUE}╚{'═' * grid_w}╝{RESET}")
 
 def main_menu():
     while True:
@@ -1022,6 +1198,7 @@ def main_menu():
 
             modules = {
                 "00": lambda: sys.exit(0),
+                "99": api_keys_menu,
                 "01": lambda: DDoSFlood().run(),
                 "02": lambda: OSINTPro().run(),
                 "03": lambda: XSSInjector().run(),
@@ -2370,11 +2547,15 @@ class AIChatbot:
 
     def __init__(self):
         self.name = "AI CHATBOT"
-        self.key_file = os.path.join(TOOLS_DIR, ".openrouter_key")
-        self.api_key = self.load_key()
+        self.key_slug = "openrouter"
+        self.key_file = _key_path(self.key_slug)
         self.history = []
         self.current_model = self.DEFAULT_MODEL
         self.current_preset = "uncensored"
+
+    @property
+    def api_key(self):
+        return load_api_key(self.key_slug)
 
     def show_models(self):
         print(f"\n{SC}┌─ Available Models ─────────────────────────────────{SR}")
@@ -2422,23 +2603,10 @@ class AIChatbot:
             print(f"{SG}[+] Style set to '{choice}'. History cleared.{SR}")
 
     def load_key(self):
-        if os.path.exists(self.key_file):
-            try:
-                with open(self.key_file, "r") as f:
-                    return f.read().strip()
-            except:
-                return None
-        return None
+        return load_api_key(self.key_slug)
 
     def save_key(self, key):
-        try:
-            with open(self.key_file, "w") as f:
-                f.write(key)
-            os.chmod(self.key_file, 0o600)
-            return True
-        except Exception as e:
-            print(f"{R}[!] Could not save key: {e}{SR}")
-            return False
+        return save_api_key(self.key_slug, key)
 
     def ask(self, query, model=None):
         model = model or self.current_model
@@ -2545,13 +2713,13 @@ class AIChatbot:
         if not self.api_key:
             print(f"\n{SY}[!] No OpenRouter API key found.{SR}")
             print(f"{SC}[i] Get a free key at: https://openrouter.ai/keys{SR}")
-            key = input(f"{SG}[+] Enter your OpenRouter API key: {SR}").strip()
+            print(f"{SC}[i] You can also set/change keys any time from main menu [99].{SR}")
+            key = input(f"{SG}[+] Enter your OpenRouter API key (Enter to abort): {SR}").strip()
             if not key:
                 print(f"{R}[-] No key provided, aborting.{SR}")
                 pause()
                 return
             if self.save_key(key):
-                self.api_key = key
                 print(f"{SG}[+] Key saved to {self.key_file}{SR}")
 
         current_name = next((n for n, m, _ in self.MODELS if m == self.current_model), self.current_model)
@@ -2959,22 +3127,18 @@ class SubdomainTakeover:
 class ShodanSearch:
     def __init__(self):
         self.name = "SHODAN SEARCH"
-        self.key_file = os.path.join(TOOLS_DIR, ".shodan_key")
-        self.api_key = self.load_key()
+        self.key_slug = "shodan"
+        self.key_file = _key_path(self.key_slug)
+
+    @property
+    def api_key(self):
+        return load_api_key(self.key_slug)
 
     def load_key(self):
-        if os.path.exists(self.key_file):
-            try:
-                with open(self.key_file) as f:
-                    return f.read().strip()
-            except:
-                return None
-        return None
+        return load_api_key(self.key_slug)
 
     def save_key(self, key):
-        with open(self.key_file, "w") as f:
-            f.write(key)
-        os.chmod(self.key_file, 0o600)
+        return save_api_key(self.key_slug, key)
 
     def search(self, query):
         print(f"\n{SC}[*] Shodan search: {query}{SR}")
@@ -3029,10 +3193,10 @@ class ShodanSearch:
         if not self.api_key:
             print(f"{SY}[!] No Shodan API key found.{SR}")
             print(f"{SC}[i] Get a free key at: https://account.shodan.io{SR}")
-            k = input(f"{SG}[+] Enter Shodan API key: {SR}").strip()
+            print(f"{SC}[i] You can also set/change keys any time from main menu [99].{SR}")
+            k = input(f"{SG}[+] Enter Shodan API key (Enter to skip): {SR}").strip()
             if k:
                 self.save_key(k)
-                self.api_key = k
 
         print(f"{SY}[!] Modules:{SR}")
         print(f"  {SC}[1]{SR} Search Shodan (e.g., 'apache port:80 country:FR')")
@@ -4338,25 +4502,18 @@ class VirusScanner:
 
     def __init__(self):
         self.name = "VIRUS SCANNER"
-        self.key_file = os.path.join(TOOLS_DIR, ".virustotal_key")
-        self.api_key = self._load_key()
+        self.key_slug = "virustotal"
+        self.key_file = _key_path(self.key_slug)
+
+    @property
+    def api_key(self):
+        return load_api_key(self.key_slug)
 
     def _load_key(self):
-        if os.path.exists(self.key_file):
-            try:
-                with open(self.key_file) as f:
-                    return f.read().strip()
-            except Exception:
-                return None
-        return None
+        return load_api_key(self.key_slug)
 
     def _save_key(self, key):
-        with open(self.key_file, "w") as f:
-            f.write(key)
-        try:
-            os.chmod(self.key_file, 0o600)
-        except Exception:
-            pass
+        return save_api_key(self.key_slug, key)
 
     def file_hash(self, path):
         h_md5 = hashlib.md5()
@@ -4465,11 +4622,11 @@ class VirusScanner:
         if not self.api_key:
             print(f"\n{SY}[!] No VirusTotal API key set.{SR}")
             print(f"{SC}[i] Get a free key at: https://www.virustotal.com/gui/my-apikey{SR}")
+            print(f"{SC}[i] You can also set/change keys any time from main menu [99].{SR}")
             k = input(f"{SG}[+] Paste your VirusTotal API key (Enter to skip): {SR}").strip()
             if not k:
                 return
             self._save_key(k)
-            self.api_key = k
 
         print(f"\n{SC}[*] Looking up SHA256 on VirusTotal...{SR}")
         with Spinner("Querying VirusTotal", color=SC):
@@ -4532,11 +4689,10 @@ class VirusScanner:
     def scan_url(self, url):
         """VT URL lookup."""
         if not self.api_key:
-            k = input(f"{SG}[+] VirusTotal API key (Enter to skip): {SR}").strip()
+            k = input(f"{SG}[+] VirusTotal API key (Enter to skip, or set from menu [99]): {SR}").strip()
             if not k:
                 return
             self._save_key(k)
-            self.api_key = k
 
         url_id = base64.urlsafe_b64encode(url.encode()).decode().rstrip("=")
         with Spinner("Checking URL on VirusTotal", color=SC):
@@ -4616,5 +4772,8 @@ if __name__ == "__main__":
     os.system('cls' if os.name == 'nt' else 'clear')
     typing(f"{SG}[+] ALL MODULES LOADED SUCCESSFULLY{SR}", 0.012)
     typing(f"{SG}[+] TOOLKIT v5.0 READY - 40 MODULES AVAILABLE{SR}", 0.012)
+    if IS_TERMUX:
+        typing(f"{SC}[+] Termux detected - compact layout enabled{SR}", 0.012)
     time.sleep(0.5)
+    first_run_setup()
     main_menu()
