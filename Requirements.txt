@@ -1,4 +1,11 @@
 requests
-beautifulsoup4
 colorama
+beautifulsoup4
 dnspython
+Pillow
+phonenumbers
+cryptography
+paramiko
+pymysql
+impacket
+scapy
