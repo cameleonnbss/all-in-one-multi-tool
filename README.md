@@ -37,7 +37,6 @@ Voici une version adaptée et propre des instructions d’installation selon l�
 # 🐧 Linux (Ubuntu / Debian / Kali)
 
 ```bash
-sudo apt update && sudo apt install git python3 python3-pip -y
 
 git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
 cd all-in-one-multi-tool
