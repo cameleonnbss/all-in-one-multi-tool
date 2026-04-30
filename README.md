@@ -43,7 +43,7 @@ cd all-in-one-multi-tool
 
 pip3 install -r requirements.txt --break-system-packages
 
-python3 multi-tooV5.py
+python3 multi-toolV5.py
 ```
 
 or make a venv :
@@ -68,7 +68,7 @@ source venv/bin/activate
 
 pip install -r requirements.txt
 
-python3 multi-tooV5.py
+python3 multi-toolV5.py
 ```
 
 ---
@@ -87,7 +87,7 @@ venv\Scripts\activate
 
 pip install -r requirements.txt
 
-python multi-tooV5.py
+python multi-toolV5.py
 ```
 
 ---
@@ -103,7 +103,7 @@ cd all-in-one-multi-tool
 
 pip install -r requirements.txt
 
-python multi-tooV5.py
+python multi-toolV5.py
 ```
 
 
