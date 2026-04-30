@@ -4689,4 +4689,314 @@ class HashCracker:
             "   40 chars  -> SHA1",
             "   64 chars  -> SHA256",
             "  128 chars  -> SHA512",
-         
+            "",
+            "For serious cracking use hashcat/john with -m <mode>.",
+            "This is for quick CTF-style hashes or known-common passwords.",
+        ])
+        h = input(f"\n{SG}[+] Hash (hex): {SR}").strip()
+        wl = input(f"{SG}[+] Wordlist path (Enter for built-in): {SR}").strip() or None
+        self.try_crack(h, wl)
+        pause()
+
+class VirusScanner:
+    """Malware scanner using VirusTotal API + local heuristics."""
+
+    SUSPICIOUS_STRINGS = [
+        b"cmd.exe /c", b"powershell -e", b"powershell -enc", b"powershell -nop",
+        b"Invoke-Expression", b"DownloadString", b"DownloadFile", b"IEX(",
+        b"bypass -exec", b"ExecutionPolicy Bypass",
+        b"CreateRemoteThread", b"VirtualAllocEx", b"WriteProcessMemory",
+        b"WScript.Shell", b"ActiveXObject",
+        b"bash -i", b"/dev/tcp/", b"nc -e", b"ncat -e",
+        b"base64 -d", b"eval(base64", b"eval $(", b"exec(__import__",
+        b"socket.socket", b"os.system", b"subprocess.Popen",
+        b"reg add", b"schtasks /create", b"at.exe",
+        b"keylogger", b"stealer", b"miner", b"ransomware",
+        b"GetAsyncKeyState", b"SetWindowsHookEx",
+        b"UPX!",  # packer signature
+        b"\x4d\x5a\x90\x00",  # MZ header (PE file)
+    ]
+
+    SUSPICIOUS_EXTENSIONS = {
+        ".exe", ".dll", ".scr", ".bat", ".cmd", ".ps1", ".vbs", ".vbe",
+        ".js", ".jse", ".wsf", ".wsh", ".hta", ".jar", ".msi", ".lnk",
+        ".com", ".pif", ".reg", ".cpl", ".gadget",
+    }
+
+    def __init__(self):
+        self.name = "VIRUS SCANNER"
+        self.key_slug = "virustotal"
+        self.key_file = _key_path(self.key_slug)
+
+    @property
+    def api_key(self):
+        return load_api_key(self.key_slug)
+
+    def _load_key(self):
+        return load_api_key(self.key_slug)
+
+    def _save_key(self, key):
+        return save_api_key(self.key_slug, key)
+
+    def file_hash(self, path):
+        h_md5 = hashlib.md5()
+        h_sha1 = hashlib.sha1()
+        h_sha256 = hashlib.sha256()
+        with open(path, "rb") as f:
+            while chunk := f.read(65536):
+                h_md5.update(chunk)
+                h_sha1.update(chunk)
+                h_sha256.update(chunk)
+        return h_md5.hexdigest(), h_sha1.hexdigest(), h_sha256.hexdigest()
+
+    def entropy(self, data):
+        import math
+        if not data:
+            return 0.0
+        freq = {}
+        for b in data:
+            freq[b] = freq.get(b, 0) + 1
+        e = 0.0
+        for c in freq.values():
+            p = c / len(data)
+            e -= p * math.log2(p)
+        return e
+
+    def local_scan(self, path):
+        """Heuristic scan: entropy, magic bytes, suspicious strings."""
+        print(f"\n{SC}[*] Local heuristic scan: {path}{SR}")
+        if not os.path.exists(path):
+            status("File not found", "err")
+            return None
+
+        size = os.path.getsize(path)
+        ext = os.path.splitext(path)[1].lower()
+
+        md5, sha1, sha256 = self.file_hash(path)
+        status(f"Size  : {size:,} bytes", "info")
+        status(f"MD5   : {md5}", "info")
+        status(f"SHA1  : {sha1}", "info")
+        status(f"SHA256: {sha256}", "info")
+
+        risk_score = 0
+        reasons = []
+
+        if ext in self.SUSPICIOUS_EXTENSIONS:
+            risk_score += 20
+            reasons.append(f"Executable extension '{ext}'")
+
+        with open(path, "rb") as f:
+            data = f.read(min(size, 5 * 1024 * 1024))
+
+        ent = self.entropy(data)
+        status(f"Entropy: {ent:.2f} / 8.0", "info")
+        if ent > 7.5:
+            risk_score += 25
+            reasons.append(f"High entropy ({ent:.2f}) — likely packed/encrypted")
+        elif ent > 7.0:
+            risk_score += 10
+            reasons.append(f"Elevated entropy ({ent:.2f})")
+
+        magic_sigs = {
+            b"MZ":         "Windows PE (EXE/DLL)",
+            b"\x7fELF":    "Linux ELF binary",
+            b"PK\x03\x04": "ZIP/JAR/APK/DOCX",
+            b"%PDF":       "PDF document",
+            b"\xca\xfe\xba\xbe": "Java class / Mach-O fat",
+        }
+        for sig, name in magic_sigs.items():
+            if data.startswith(sig):
+                status(f"Magic: {name}", "warn" if sig in (b"MZ", b"\x7fELF") else "info")
+                if sig == b"MZ":
+                    risk_score += 15
+                    reasons.append("Windows executable format")
+                break
+
+        found_strings = []
+        for needle in self.SUSPICIOUS_STRINGS:
+            if needle in data:
+                found_strings.append(needle.decode("utf-8", errors="replace"))
+
+        if found_strings:
+            risk_score += min(len(found_strings) * 8, 40)
+            print(f"\n{R}[!] Suspicious strings found ({len(found_strings)}):{SR}")
+            for s in found_strings[:15]:
+                print(f"    {R}→ {s}{SR}")
+            reasons.append(f"{len(found_strings)} suspicious string(s)")
+
+        risk_score = min(risk_score, 100)
+        print()
+        if risk_score >= 60:
+            status(f"RISK SCORE: {risk_score}/100 — LIKELY MALICIOUS", "hit")
+        elif risk_score >= 30:
+            status(f"RISK SCORE: {risk_score}/100 — SUSPICIOUS", "warn")
+        else:
+            status(f"RISK SCORE: {risk_score}/100 — looks clean (local heuristic only)", "ok")
+
+        if reasons:
+            print(f"\n{SY}Reasons:{SR}")
+            for r in reasons:
+                print(f"  {SY}- {r}{SR}")
+
+        return sha256
+
+    def vt_lookup(self, sha256):
+        """Check hash against VirusTotal public API."""
+        if not self.api_key:
+            print(f"\n{SY}[!] No VirusTotal API key set.{SR}")
+            print(f"{SC}[i] Get a free key at: https://www.virustotal.com/gui/my-apikey{SR}")
+            print(f"{SC}[i] You can also set/change keys any time from main menu [99].{SR}")
+            k = input(f"{SG}[+] Paste your VirusTotal API key (Enter to skip): {SR}").strip()
+            if not k:
+                return
+            self._save_key(k)
+
+        print(f"\n{SC}[*] Looking up SHA256 on VirusTotal...{SR}")
+        with Spinner("Querying VirusTotal", color=SC):
+            try:
+                r = requests.get(
+                    f"https://www.virustotal.com/api/v3/files/{sha256}",
+                    headers={"x-apikey": self.api_key},
+                    timeout=15,
+                )
+            except Exception as e:
+                status(f"Network error: {e}", "err")
+                return
+
+        if r.status_code == 404:
+            status("Hash not seen by VirusTotal (not yet analyzed)", "warn")
+            return
+        if r.status_code == 401:
+            status("API key invalid or expired", "err")
+            return
+        if r.status_code != 200:
+            status(f"API returned {r.status_code}: {r.text[:150]}", "err")
+            return
+
+        try:
+            attrs = r.json()["data"]["attributes"]
+            stats = attrs.get("last_analysis_stats", {})
+            malicious = stats.get("malicious", 0)
+            suspicious = stats.get("suspicious", 0)
+            undetected = stats.get("undetected", 0)
+            total = sum(stats.values())
+
+            print()
+            status(f"Engines total : {total}", "info")
+            if malicious > 0:
+                status(f"MALICIOUS     : {malicious}  ← FLAGGED AS THREAT", "hit")
+            else:
+                status(f"Malicious     : 0", "ok")
+            status(f"Suspicious    : {suspicious}", "warn" if suspicious else "info")
+            status(f"Undetected    : {undetected}", "info")
+
+            names = attrs.get("names", [])
+            if names:
+                print(f"\n{SY}Known filenames:{SR}")
+                for n in names[:8]:
+                    print(f"  {SY}- {n}{SR}")
+
+            if malicious > 0:
+                flagged = attrs.get("last_analysis_results", {})
+                print(f"\n{R}[!] Sample of detections:{SR}")
+                shown = 0
+                for engine, res in flagged.items():
+                    if res.get("category") == "malicious":
+                        print(f"  {R}- {engine:20} → {res.get('result', '?')}{SR}")
+                        shown += 1
+                        if shown >= 10:
+                            break
+        except Exception as e:
+            status(f"Parse error: {e}", "err")
+
+    def scan_url(self, url):
+        """VT URL lookup."""
+        if not self.api_key:
+            k = input(f"{SG}[+] VirusTotal API key (Enter to skip, or set from menu [99]): {SR}").strip()
+            if not k:
+                return
+            self._save_key(k)
+
+        url_id = base64.urlsafe_b64encode(url.encode()).decode().rstrip("=")
+        with Spinner("Checking URL on VirusTotal", color=SC):
+            try:
+                r = requests.get(
+                    f"https://www.virustotal.com/api/v3/urls/{url_id}",
+                    headers={"x-apikey": self.api_key},
+                    timeout=15,
+                )
+            except Exception as e:
+                status(f"Network error: {e}", "err")
+                return
+
+        if r.status_code == 404:
+            status("URL not yet analyzed by VT — submit it manually first", "warn")
+            return
+        if r.status_code != 200:
+            status(f"VT returned {r.status_code}", "err")
+            return
+
+        attrs = r.json()["data"]["attributes"]
+        stats = attrs.get("last_analysis_stats", {})
+        mal = stats.get("malicious", 0)
+        total = sum(stats.values())
+        print()
+        if mal > 0:
+            status(f"{mal}/{total} engines flag this URL as malicious", "hit")
+        else:
+            status(f"0/{total} engines flag this URL", "ok")
+
+    def run(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
+        boxed("VIRUS SCANNER", color=R)
+        howto("Virus Scanner", [
+            "Malware detection using both local heuristics and VirusTotal API.",
+            "",
+            "  [1] Full scan file  - local heuristics + VT hash lookup",
+            "  [2] Local scan only - entropy / magic / suspicious strings (no API)",
+            "  [3] Hash lookup     - check an existing SHA256 against VT",
+            "  [4] URL scan        - check if a URL is flagged as malicious on VT",
+            "",
+            "Local heuristic scores:",
+            "  - High entropy (>7.5)        -> packed/crypted payload",
+            "  - Windows PE magic bytes      -> .exe / .dll",
+            "  - Reverse-shell / loader API calls found in file",
+            "",
+            "VirusTotal integration requires a FREE API key:",
+            "  https://www.virustotal.com/gui/my-apikey",
+            "Key is saved locally (chmod 600) on first use.",
+        ])
+        print(f"\n{SY}[!] Modes:{SR}")
+        print(f"  {SC}[1]{SR} Full scan (file + VirusTotal)")
+        print(f"  {SC}[2]{SR} Local heuristics only")
+        print(f"  {SC}[3]{SR} Hash lookup (SHA256)")
+        print(f"  {SC}[4]{SR} URL scan")
+        choice = input(f"\n{SG}[+] Choice: {SR}").strip()
+
+        if choice == "1":
+            path = input(f"{SG}[+] File path: {SR}").strip().strip('"').strip("'")
+            sha = self.local_scan(path)
+            if sha:
+                self.vt_lookup(sha)
+        elif choice == "2":
+            path = input(f"{SG}[+] File path: {SR}").strip().strip('"').strip("'")
+            self.local_scan(path)
+        elif choice == "3":
+            sha = input(f"{SG}[+] SHA256 hash: {SR}").strip()
+            self.vt_lookup(sha)
+        elif choice == "4":
+            url = input(f"{SG}[+] URL to check: {SR}").strip()
+            self.scan_url(url)
+        pause()
+
+if __name__ == "__main__":
+    check_dependencies()
+    show_disclaimer()
+    os.system('cls' if os.name == 'nt' else 'clear')
+    typing(f"{SG}[+] ALL MODULES LOADED SUCCESSFULLY{SR}", 0.012)
+    typing(f"{SG}[+] TOOLKIT v5.0 READY - 40 MODULES AVAILABLE{SR}", 0.012)
+    if IS_TERMUX:
+        typing(f"{SC}[+] Termux detected - compact layout enabled{SR}", 0.012)
+    time.sleep(0.5)
+    first_run_setup()
+    main_menu()
