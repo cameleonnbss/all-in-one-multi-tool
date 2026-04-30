@@ -2513,23 +2513,34 @@ class CryptoModule:
 
 class AIChatbot:
     MODELS = [
-        ("Dolphin 3.0 Mistral 24B",   "cognitivecomputations/dolphin3.0-mistral-24b:free", "UNCENSORED — no refusals"),
-        ("Dolphin 2.9 Llama 3 8B",    "cognitivecomputations/dolphin-llama-3-8b",          "UNCENSORED — fast"),
-        ("Venice Uncensored",         "cognitivecomputations/dolphin-mistral-24b-venice-edition:free", "UNCENSORED — Venice variant"),
-        ("Nous Hermes 3 405B",        "nousresearch/hermes-3-llama-3.1-405b",              "Low-refusal, huge model"),
+        ("Venice Uncensored (free)",  "cognitivecomputations/dolphin-mistral-24b-venice-edition:free", "UNCENSORED — Dolphin Venice, gratuit"),
+        ("Hermes 3 405B (free)",      "nousresearch/hermes-3-llama-3.1-405b:free",         "Low-refusal, 405B, gratuit"),
+        ("Hermes 4 405B",             "nousresearch/hermes-4-405b",                        "Low-refusal nouvelle gen"),
+        ("Hermes 4 70B",              "nousresearch/hermes-4-70b",                         "Low-refusal plus rapide"),
+        ("DeepSeek R1T2 Chimera",     "tngtech/deepseek-r1t2-chimera",                     "Hybride débridé R1+V3"),
         ("WizardLM-2 8x22B",          "microsoft/wizardlm-2-8x22b",                        "Low-refusal reasoning"),
-        ("DeepSeek Chat V3",          "deepseek/deepseek-chat",                            "Fast, permissive, great at code"),
-        ("DeepSeek R1",               "deepseek/deepseek-r1",                              "Reasoning, step-by-step"),
+        ("DeepSeek R1 0528",          "deepseek/deepseek-r1-0528",                         "Reasoning, permissif avec DAN"),
+        ("DeepSeek V3.2",             "deepseek/deepseek-v3.2",                            "Fast, permissif, excellent en code"),
+        ("DeepSeek Chat V3.1",        "deepseek/deepseek-chat-v3.1",                       "Polyvalent, pas cher"),
+        ("Llama 3.3 70B (free)",      "meta-llama/llama-3.3-70b-instruct:free",            "Open weights, gratuit"),
+        ("Llama 4 Maverick",          "meta-llama/llama-4-maverick",                       "Nouveau Llama 4"),
+        ("Qwen3 Coder (free)",        "qwen/qwen3-coder:free",                             "Spécialiste code, gratuit"),
+        ("Qwen3 235B Thinking",       "qwen/qwen3-235b-a22b-thinking-2507",                "Gros modèle reasoning"),
+        ("GPT-OSS 120B (free)",       "openai/gpt-oss-120b:free",                          "OpenAI open-source, gratuit"),
+        ("GPT-OSS 20B (free)",        "openai/gpt-oss-20b:free",                           "OpenAI open-source light, gratuit"),
+        ("Grok 4",                    "x-ai/grok-4",                                       "xAI, très peu de refus"),
+        ("Grok 4 Fast",               "x-ai/grok-4-fast",                                  "Grok rapide"),
+        ("GLM 4.6",                   "z-ai/glm-4.6",                                      "Chinois, permissif"),
+        ("Kimi K2 Thinking",          "moonshotai/kimi-k2-thinking",                       "Long contexte, reasoning"),
         ("Claude Sonnet 4.5",         "anthropic/claude-sonnet-4.5",                       "Strong security analysis"),
         ("Claude Opus 4.1",           "anthropic/claude-opus-4.1",                         "Most capable Claude"),
         ("GPT-4o",                    "openai/gpt-4o",                                     "OpenAI flagship"),
         ("GPT-4o Mini",               "openai/gpt-4o-mini",                                "Cheap and fast"),
-        ("Gemini 2.0 Flash (free)",   "google/gemini-2.0-flash-exp:free",                  "Free tier"),
-        ("Llama 3.3 70B",             "meta-llama/llama-3.3-70b-instruct",                 "Open weights"),
-        ("Qwen 2.5 Coder 32B",        "qwen/qwen-2.5-coder-32b-instruct",                  "Code specialist"),
-        ("Mistral Large",             "mistralai/mistral-large",                           "European alternative"),
+        ("Gemini 2.0 Flash",          "google/gemini-2.0-flash-001",                       "Google rapide"),
+        ("Mistral Large 2411",        "mistralai/mistral-large-2411",                      "European alternative"),
+        ("Mistral Small 3.2",         "mistralai/mistral-small-3.2-24b-instruct",          "Mistral récent, pas cher"),
     ]
-    DEFAULT_MODEL = "cognitivecomputations/dolphin3.0-mistral-24b:free"
+    DEFAULT_MODEL = "cognitivecomputations/dolphin-mistral-24b-venice-edition:free"
     API_URL = "https://openrouter.ai/api/v1/chat/completions"
     PRESETS = {
         "uncensored": (
