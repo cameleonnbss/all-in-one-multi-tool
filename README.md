@@ -35,7 +35,7 @@ python multi-tooV5-fixed.py
 git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
 cd all-in-one-multi-tool
 pip3 install -r requirements.txt --break-system-packages
-python3 multi-tooV5-fixed.py
+python3 multi-toolV5.py
 ```
 
 ### 🍎 macOS
@@ -45,7 +45,7 @@ git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
 cd all-in-one-multi-tool
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-python3 multi-tooV5-fixed.py
+python3 multi-toolV5.py
 ```
 
 ### 🪟 Windows
@@ -54,7 +54,7 @@ Double-clique sur `setup.bat` — installe tout et lance le tool.
 Ou manuellement :
 ```powershell
 pip install -r requirements.txt
-python multi-tooV5-fixed.py
+python multi-toolV5.py
 ```
 
 ### 📱 Termux (Android)
@@ -64,7 +64,7 @@ pkg install git python -y
 git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
 cd all-in-one-multi-tool
 pip install -r requirements.txt
-python multi-tooV5-fixed.py
+python multi-toolV5.py
 ```
 
 > Les modules 17 (WiFi), 25 (ARP), 30 (Packet Sniff) nécessitent root sur Termux.
