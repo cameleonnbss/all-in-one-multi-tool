@@ -1,286 +1,212 @@
-# 🛠️ ALL IN ONE TOOL
+# 🛠️ ALL IN ONE TOOL v5
 
-> All-In-One Hacking Toolkit — 40 modules, 2 versions, actively developed.
+> All-In-One Hacking Toolkit — 40+ modules, UI violet animée, modules inline, AI chatbot avec fallback automatique.
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)
-![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows%20%7C%20macOS%20%7C%20Termux-lightgrey)
-![Modules](https://img.shields.io/badge/Modules-40-green)
+![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS%20%7C%20Termux-lightgrey)
+![Modules](https://img.shields.io/badge/Modules-40%2B-green)
 ![AI](https://img.shields.io/badge/AI-Uncensored-red)
-![Status](https://img.shields.io/badge/Status-In%20Development-orange)
+![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 ![License](https://img.shields.io/badge/License-Educational%20Only-red)
-
----
-
-## 🚧 Work In Progress
-
-Some modules may still be rough around the edges — feedback welcome.
 
 ---
 
 ## ⚡ Quick Start
 
-### v5.0 — Latest (40 modules)
-Voici une version adaptée et propre des instructions d’installation selon l’OS :
+### Windows — Setup automatique
+```bat
+setup.bat
+```
 
----
-
-# 🛠️ Installation – ALL IN ONE TOOL
-
-## ⚡ Prérequis (tous systèmes)
-
-* Python 3 installé
-* pip installé
-* Git installé
-
----
-
-# 🐧 Linux (Ubuntu / Debian / Kali)
-
+### Manuel (tous OS)
 ```bash
-
 git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
 cd all-in-one-multi-tool
-
-pip3 install -r requirements.txt --break-system-packages
-
-python3 multi-toolV5.py
-```
-
-or make a venv :
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
 pip install -r requirements.txt
+python multi-tooV5-fixed.py
 ```
 
+---
 
-# 🍎 macOS
+## 🚀 Installation par OS
 
+### 🐧 Linux (Ubuntu / Debian / Kali)
+```bash
+git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
+cd all-in-one-multi-tool
+pip3 install -r requirements.txt --break-system-packages
+python3 multi-tooV5-fixed.py
+```
+
+### 🍎 macOS
 ```bash
 brew install git python
-
 git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
 cd all-in-one-multi-tool
-
-python3 -m venv venv
-source venv/bin/activate
-
+python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-
-python3 multi-toolV5.py
+python3 multi-tooV5-fixed.py
 ```
 
----
+### 🪟 Windows
+Double-clique sur `setup.bat` — installe tout et lance le tool.
 
-# 🪟 Windows (PowerShell)
-
+Ou manuellement :
 ```powershell
-winget install Git.Git
-winget install Python.Python.3
-
-git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
-cd all-in-one-multi-tool
-
-python -m venv venv
-venv\Scripts\activate
-
 pip install -r requirements.txt
-
-python multi-toolV5.py
+python multi-tooV5-fixed.py
 ```
 
----
-
-# 📱 Termux (Android)
-
+### 📱 Termux (Android)
 ```bash
 pkg update && pkg upgrade -y
 pkg install git python -y
-
-git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
-cd all-in-one-multi-tool
-
-pip install -r requirements.txt
-
-python multi-toolV5.py
-```
-
-
-### v3.0 — Stable
-```bash
 git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
 cd all-in-one-multi-tool
 pip install -r requirements.txt
-python3 multi-tool.py
+python multi-tooV5-fixed.py
 ```
 
-> Missing deps are auto-installed on first run if you skip `pip install`.
+> Les modules 17 (WiFi), 25 (ARP), 30 (Packet Sniff) nécessitent root sur Termux.
 
 ---
 
-## 📦 Dependencies
+## 🗂️ Modules — v5 (40+)
 
-All pip dependencies sit in `requirements.txt`:
+### ⚔️ Attack
+| # | Module | Description |
+|---|--------|-------------|
+| 01 | DDoS Flood | 9 techniques : UDP · SYN · HTTP · Slowloris · POST · RUDY · DNS · ICMP · SSL |
+| 03 | XSS Injector | 20+ payloads GET/POST |
+| 04 | SQL Injector | Error-based + time-based |
+| 05 | Brute Force | SSH · FTP · HTTP · WordPress · SMB · MySQL · RDP |
+| 25 | ARP Spoofer | MITM Layer 2 |
+| 28 | XXE Injection | 7 payloads dont Billion Laughs |
+| 29 | SSRF Scanner | AWS/GCP metadata probes |
+| St | Steam Phishing | Page login Steam via ngrok (inline) |
+| DS | Discord Stealer | Cookies Firefox/Chrome + tokens Discord → webhook (inline) |
+| DR | Discord RAT | Bot C2 via Discord — !cmd !webcam !keylogger... (inline) |
 
-```
-requests, colorama, beautifulsoup4, dnspython, Pillow,
-phonenumbers, cryptography, paramiko, pymysql, impacket, scapy
-```
+### 🔍 OSINT & Recon
+| # | Module | Description |
+|---|--------|-------------|
+| 02 | OSINT Pro | Email · phone · username · Google dorks |
+| 06 | Vuln Scanner | Headers, SSL, CORS, cookies, .git |
+| 07 | Network Scanner | Ping sweep, traceroute, whois, geoip |
+| 08 | Port Scanner | 25 ports + banner grab |
+| 09 | DNS Enum | A/MX/NS/TXT/subdomains |
+| 21 | Sub Takeover | 13 providers |
+| 22 | Shodan | Query + host info |
+| 26 | CVE Scanner | NVD API + banner |
+| 30 | Packet Sniff | HTTP creds / DNS |
+| 32 | TechInt | Stack fingerprinting |
+| 33 | Phone Lookup | Carrier · timezone · OSINT links |
+| 34 | Pub Cameras | Shodan/Insecam dorks |
+| 36 | ASN Lookup | Network owner |
+| 37 | Wayback | URL archive discovery |
+| 38 | SSL Inspector | Cert + SAN dump |
 
-### System tools (not pip-installable)
-
-| Tool                   | Install                           | Used by                     |
-|------------------------|-----------------------------------|-----------------------------|
-| `msfvenom`             | Metasploit Framework              | Payload Generator (24)      |
-| `xfreerdp`             | `sudo apt install freerdp2-x11`   | RDP brute force             |
-| `aircrack-ng` suite    | `sudo apt install aircrack-ng`    | WiFi Tools (17)             |
-| `traceroute`, `whois`  | `sudo apt install traceroute whois` | Network Scanner          |
-
----
-
-## 🗂️ Modules — v5.0 (40 total)
-
-### Attack & Exploit
-| #  | Module |
-|----|--------|
-| 01 | DDoS Flood — 9 techniques (UDP/SYN/HTTP/Slowloris/POST/RUDY/DNS/ICMP/SSL-reneg) |
-| 03 | XSS Injector — 20+ payloads |
-| 04 | SQL Injector — error & time based |
-| 05 | Brute Force — SSH · FTP · HTTP · WordPress · SMB · MySQL · RDP |
-| 25 | ARP Spoofer — MITM Layer 2 |
-| 28 | XXE Injection — 7 payloads incl. Billion Laughs |
-| 29 | SSRF Scanner — AWS/GCP metadata probes |
-
-### Reconnaissance & Scanning
-| #  | Module |
-|----|--------|
-| 02 | OSINT — email · phone · username · Google dorks |
-| 06 | Vulnerability Scanner — headers, SSL, CORS, cookies, .git, methods |
-| 07 | Network Scanner — ping sweep, traceroute, whois, geoip, ARP |
-| 08 | Port Scanner — 25 ports + banner grab |
-| 09 | DNS Enumeration — A/MX/NS/TXT/subdomains |
-| 21 | Subdomain Takeover — 13 providers |
-| 22 | Shodan Search — query + host info |
-| 26 | CVE Scanner — NVD API + auto banner lookup |
-| 30 | Packet Sniffer — HTTP creds / DNS / general |
-| 32 | TechInt Analyzer — stack fingerprinting |
-| 34 | **Public Cameras** — Shodan/Insecam dork generator |
-| 36 | **ASN Lookup** — identify network owner |
-| 37 | **Wayback Search** — archived URL discovery |
-| 38 | **SSL Inspector** — full cert + SAN dump |
-
-### Crypto & Forensics
-| #  | Module |
-|----|--------|
+### 🔐 Crypto & Forensics
+| # | Module |
+|---|--------|
 | 10 | Hash & Encode — MD5/SHA/NTLM + Base64/Hex |
-| 11 | Crypto Tools — AES-256, RSA, Caesar brute, HMAC, XOR, auto-decode |
-| 19 | Steganography — LSB hide/extract, strings |
+| 11 | Crypto Tools — AES-256, RSA, Caesar brute, HMAC, XOR |
+| 19 | Steganography — LSB hide/extract |
 | 20 | JWT Tool — decode, none-alg, brute HS256 |
-| 23 | File Analyzer + **Virus Scanner** — magic bytes, hashes, entropy, local AV, VirusTotal |
-| 31 | Image Metadata — full EXIF + GPS → Google Maps |
-| 40 | **Hash Cracker** — offline dict attack MD5/SHA1/SHA256/SHA512 |
+| 23 | File + Virus Scanner — magic bytes, hashes, entropy, VirusTotal |
+| 31 | Image Meta — EXIF + GPS → Google Maps |
+| 40 | Hash Cracker — dict attack MD5/SHA1/SHA256 |
 
-### Offensive tooling
-| #  | Module |
-|----|--------|
+### 💣 Offensive
+| # | Module |
+|---|--------|
 | 14 | Web Hacking Suite — directory buster |
-| 15 | Phishing Tools — ZPhisher integration |
-| 16 | Reverse Shell Generator — 14 langs + TTY upgrade guide |
+| 15 | Phishing Tools |
+| 16 | Rev Shell — 14 langages |
 | 17 | WiFi Tools — aircrack-ng suite |
-| 18 | Metasploit Helper — msfvenom cheatsheet |
-| 24 | Payload Generator — msfvenom wrapper + XOR / PS base64 |
-| 27 | Wordlist Generator — leet-speak + year mutations |
+| 18 | Metasploit Helper — cheatsheet msfvenom |
+| 24 | Payload Gen — msfvenom wrapper + XOR/PS |
+| 27 | Wordlist Gen — leet + mutations |
 
-### Intel / OSINT
-| #  | Module |
-|----|--------|
-| 13 | Social Media Tools — 50+ platforms |
-| 33 | Phone Lookup — country, carrier, WhatsApp/Telegram probe |
-| 35 | **Paste Search** — Pastebin/Ghostbin/IntelX credential leaks |
-| 39 | **Breach Check** — HIBP + DeHashed/LeakCheck dorks |
-
-### AI
-| #  | Module |
-|----|--------|
-| 12 | AI Chatbot — **15 models** including uncensored (Dolphin, Hermes, WizardLM) |
+### 🤖 AI & Extra
+| # | Module |
+|---|--------|
+| 12 | AI Chatbot — fallback automatique sur 10 modèles |
+| 13 | Social Media — 50+ plateformes |
+| 35 | Paste Search — Pastebin/Ghostbin/IntelX |
+| 39 | Breach Check — HIBP + leaks |
 
 ---
 
 ## 🤖 AI Chatbot (module 12)
 
-**Default: `Dolphin 3.0 Mistral 24B` in DAN (uncensored) mode.**
+Fallback automatique : si un modèle est en 429/404, passe au suivant jusqu'à obtenir une réponse.
 
-### Available models (via OpenRouter)
+**Modèles disponibles :**
 
-| Tier | Models |
-|------|--------|
-| **Uncensored** | Dolphin 3.0 Mistral 24B · Dolphin 2.9 Llama 3 · Venice · Hermes 3 405B · WizardLM-2 8x22B |
-| **Mainstream** | DeepSeek Chat V3 · DeepSeek R1 · Claude Sonnet 4.5 · Claude Opus 4.1 · GPT-4o · GPT-4o Mini · Gemini 2.0 Flash · Llama 3.3 70B · Qwen 2.5 Coder · Mistral Large |
+| Statut | Modèle |
+|--------|--------|
+| ✅ Actif | Gemma 4 26B · Gemma 4 31B · Nemotron 120B · GPT-OSS 120B |
+| 🔄 Selon quota | Dolphin Venice 24B · Hermes 3 405B · Llama 3.3 70B · Qwen3 Coder |
 
-### Setup
+**Setup :** clé OpenRouter gratuite → [openrouter.ai/keys](https://openrouter.ai/keys)
 
-1. Get a free OpenRouter key → [openrouter.ai/keys](https://openrouter.ai/keys)
-2. Launch module 12 → paste key on first run
-3. Saved to `~/AllInOneTool/tools/.openrouter_key` (chmod 600)
-
-### In-chat commands
-
-| Command    | Action                                                   |
-|------------|----------------------------------------------------------|
-| `/model`   | Switch model (numbered list)                             |
-| `/style`   | Switch style: **uncensored** / hacker / explain / coder / ctf |
-| `/clear`   | Reset conversation history                               |
-| `/history` | Show conversation so far                                 |
-| `/save`    | Save chat to markdown                                    |
-| `/exit`    | Back to main menu                                        |
-
----
-
-## ⚠️ Known Issues
-
-- **Social Media Tools (13)** — several platforms actively block automated requests.
-- **WiFi, ARP Spoof, Packet Sniff** — require root + Linux.
-- **Phishing (15)** — Linux only, needs `git`.
-- **Windows** — a few modules rely on Unix-only commands (`ping -c`, `traceroute`). Use WSL for full compat.
-
----
-
-## 🖥️ Compatibility
-
-| Feature                  | Linux | Windows | macOS | Termux |
-|--------------------------|:-----:|:-------:|:-----:|:------:|
-| Core menu & modules      | ✅    | ✅      | ✅    | ✅     |
-| WiFi (aircrack-ng)       | ✅    | ❌ WSL  | ⚠️    | ❌     |
-| Port / Network Scanner   | ✅    | ✅      | ✅    | ✅     |
-| Reverse Shell Generator  | ✅    | ✅      | ✅    | ✅     |
-| Brute Force SSH/FTP      | ✅    | ✅      | ✅    | ✅     |
-| ARP Spoof / Sniffer      | ✅    | ❌      | ⚠️    | ❌     |
-| AI Chatbot               | ✅    | ✅      | ✅    | ✅     |
-| DDoS (all 9 vectors)     | ✅    | ✅      | ✅    | ✅     |
-| Image Metadata / EXIF    | ✅    | ✅      | ✅    | ✅     |
-
-### Termux install
-
-```bash
-pkg update && pkg upgrade
-pkg install python python-pip git openssh nmap whois traceroute
-pip install -r requirements.txt
-python multi-tooV5-fixed.py
+**Commandes in-chat :**
+```
+/model    changer de modèle
+/style    uncensored / hacker / coder / ctf / explain
+/clear    reset historique
+/history  voir la conversation
+/save     sauvegarder en markdown
+/exit     retour au menu
 ```
 
-Raw-socket modules (**17, 25, 30**) will not run on Termux without root.
+---
+
+## 📦 Dépendances
+
+```
+requests  colorama  beautifulsoup4  dnspython  phonenumbers
+cryptography  Pillow  scapy  paramiko  pymysql  impacket
+flask  pyngrok
+```
+
+Optionnel (Discord RAT) : `discord.py  keyboard  pyautogui  opencv-python  pywin32`
+
+### Outils système (non-pip)
+
+| Outil | Install | Module |
+|-------|---------|--------|
+| `aircrack-ng` | `sudo apt install aircrack-ng` | 17 WiFi |
+| `msfvenom` | Metasploit Framework | 18, 24 |
+| `traceroute/whois` | `sudo apt install traceroute whois` | 07 |
 
 ---
 
-## 👤 Author
+## 🖥️ Compatibilité
 
-**cameleonnbss** — *signed camzzz*
-
-- 🐙 GitHub : [github.com/cameleonnbss](https://github.com/cameleonnbss)
+| Module | Linux | Windows | macOS | Termux |
+|--------|:-----:|:-------:|:-----:|:------:|
+| Core (tous) | ✅ | ✅ | ✅ | ✅ |
+| DDoS (9 vecteurs) | ✅ | ✅ | ✅ | ✅ |
+| WiFi / ARP / Sniff | ✅ | ❌ | ⚠️ | root |
+| Discord RAT | ✅ | ✅ | ✅ | ✅ |
+| Steam Phishing | ✅ | ✅ | ✅ | ✅ |
+| AI Chatbot | ✅ | ✅ | ✅ | ✅ |
+| Port / Net Scanner | ✅ | ✅ | ✅ | ✅ |
 
 ---
 
-## ⚖️ Disclaimer
+## ⚠️ Disclaimer
 
-This toolkit is provided **for educational purposes, authorized penetration testing, and CTF challenges only**. The author is **NOT responsible** for any misuse. Only run it against systems you own or are explicitly authorized to test. **Enjoy your hacking day.**
+**Usage éducatif, pentest autorisé et CTF uniquement.**  
+L'auteur n'est **pas responsable** de toute utilisation abusive.  
+Teste uniquement sur des systèmes que tu possèdes ou pour lesquels tu as une autorisation écrite.
+
+---
+
+## 👤 Auteur
+
+**cameleonnbss** — *signed camzzz*  
+🐙 [github.com/cameleonnbss](https://github.com/cameleonnbss)
+
