@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>multi-tool v5 — documentation</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0c0c0c;
+  --bg2:     #111111;
+  --bg3:     #181818;
+  --line:    #222222;
+  --red:     #e63946;
+  --red2:    #c1121f;
+  --red3:    #ff6b6b;
+  --dim:     #555555;
+  --text:    #cccccc;
+  --white:   #eeeeee;
+  --nav-w:   200px;
+  --mono:    'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+/* ── sidebar ── */
+nav#sidebar {
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  width: var(--nav-w);
+  background: var(--bg2);
+  border-right: 1px solid var(--line);
+  overflow-y: auto;
+  z-index: 50;
+}
+
+nav#sidebar .brand {
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+nav#sidebar .brand .name {
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+nav#sidebar .brand .ver {
+  color: var(--dim);
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+nav#sidebar .group {
+  padding: 14px 18px 4px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+nav#sidebar a {
+  display: block;
+  padding: 5px 18px;
+  font-size: 12px;
+  color: var(--dim);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: color .1s, border-color .1s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+nav#sidebar a:hover { color: var(--text); }
+nav#sidebar a.on { color: var(--red3); border-left-color: var(--red); }
+
+/* ── content ── */
+main {
+  margin-left: var(--nav-w);
+  max-width: 860px;
+  padding: 0 52px 80px;
+}
+
+/* ── hero ── */
+#hero {
+  padding: 56px 0 44px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 48px;
+}
+
+#ascii {
+  font-size: 11px;
+  line-height: 1.25;
+  color: var(--red2);
+  white-space: pre;
+  margin-bottom: 24px;
+  opacity: .85;
+}
+
+.tagline {
+  color: var(--dim);
+  font-size: 12px;
+  margin-bottom: 18px;
+}
+
+.tagline strong { color: var(--text); }
+
+.badges { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.badge {
+  font-size: 10px;
+  padding: 2px 9px;
+  border: 1px solid var(--line);
+  color: var(--dim);
+  border-radius: 2px;
+  letter-spacing: .3px;
+}
+
+.badge-red { border-color: var(--red2); color: var(--red3); }
+
+/* ── sections ── */
+section {
+  margin-bottom: 56px;
+  scroll-margin-top: 32px;
+}
+
+h2 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+h2 .prefix { color: var(--red); font-weight: 400; }
+
+h3 {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--red3);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin: 28px 0 12px;
+}
+
+p { margin-bottom: 14px; color: var(--text); }
+
+a { color: var(--red3); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── code ── */
+.code-block {
+  position: relative;
+  margin: 12px 0 20px;
+}
+
+pre {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--red2);
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--text);
+  border-radius: 0 3px 3px 0;
+}
+
+pre .cm  { color: #555; font-style: italic; }
+pre .kw  { color: var(--red3); }
+pre .str { color: #a8dadc; }
+pre .num { color: #f4d35e; }
+
+.copy {
+  position: absolute;
+  top: 8px; right: 8px;
+  padding: 3px 9px;
+  background: var(--bg3);
+  border: 1px solid var(--line);
+  color: var(--dim);
+  font: 10px var(--mono);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all .15s;
+}
+.copy:hover { color: var(--red3); border-color: var(--red2); }
+.copy.ok { color: #6fcf97; border-color: #6fcf97; }
+
+/* ── tabs ── */
+.tabs { display: flex; border-bottom: 1px solid var(--line); margin-bottom: 20px; }
+.tab {
+  padding: 7px 16px;
+  font: 11px var(--mono);
+  cursor: pointer;
+  color: var(--dim);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all .1s;
+}
+.tab:hover { color: var(--text); }
+.tab.on { color: var(--red3); border-bottom-color: var(--red); }
+.tab-body { display: none; }
+.tab-body.on { display: block; }
+
+/* ── tables ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin: 14px 0 24px;
+}
+
+thead tr { border-bottom: 1px solid var(--line); }
+th {
+  padding: 7px 12px;
+  text-align: left;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 700;
+}
+
+td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #1a1a1a;
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(230,57,70,.04); }
+
+td code, p code {
+  background: var(--bg3);
+  border: 1px solid var(--line);
+  padding: 1px 5px;
+  border-radius: 2px;
+  font-size: 11px;
+  color: var(--red3);
+}
+
+.ultra td { color: var(--red3); font-weight: 700; }
+
+/* ── module grid ── */
+#search {
+  width: 100%;
+  max-width: 320px;
+  padding: 8px 12px;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font: 12px var(--mono);
+  border-radius: 2px;
+  margin-bottom: 18px;
+  outline: none;
+}
+#search:focus { border-color: var(--red2); }
+#search::placeholder { color: var(--dim); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 8px;
+}
+
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  padding: 12px 14px;
+  border-radius: 2px;
+  transition: border-color .15s;
+}
+.card:hover { border-color: var(--red2); }
+.card.gone { display: none; }
+
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 5px;
+}
+
+.card-id {
+  font-size: 10px;
+  color: var(--red);
+  background: rgba(230,57,70,.1);
+  border: 1px solid rgba(230,57,70,.2);
+  padding: 1px 5px;
+  border-radius: 1px;
+}
+
+.card-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.card-cat {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.card-desc {
+  font-size: 11px;
+  color: var(--dim);
+  line-height: 1.55;
+}
+
+/* ── RAT cards ── */
+.rat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 14px 0 24px;
+}
+
+.rat-card {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  padding: 16px;
+  border-radius: 2px;
+}
+
+.rat-card h4 {
+  font-size: 12px;
+  color: var(--red3);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  padding: 4px 0;
+  border-bottom: 1px solid #1a1a1a;
+}
+.row:last-child { border-bottom: none; }
+.row span:first-child { color: var(--dim); }
+
+/* ── key ── */
+.k {
+  display: inline-block;
+  padding: 1px 6px;
+  background: var(--bg3);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font-size: 11px;
+  color: var(--red3);
+}
+
+/* ── disclaimer ── */
+.disclaimer {
+  background: rgba(230,57,70,.05);
+  border: 1px solid rgba(230,57,70,.15);
+  padding: 14px 18px;
+  border-radius: 2px;
+  font-size: 11px;
+  color: var(--dim);
+  line-height: 1.8;
+  margin-top: 12px;
+}
+
+.disclaimer strong { color: var(--red3); }
+
+/* ── scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+@media (max-width: 720px) {
+  :root { --nav-w: 0px; }
+  nav#sidebar { display: none; }
+  main { padding: 0 20px 60px; }
+  .rat-grid { grid-template-columns: 1fr; }
+  #ascii { font-size: 7px; }
+}
+</style>
+</head>
+<body>
+
+<nav id="sidebar">
+  <div class="brand">
+    <div class="name">ALL-IN-ONE</div>
+    <div class="ver">multi-tool v5 · cameleonnbss</div>
+  </div>
+  <div class="group">getting started</div>
+  <a href="#overview">Overview</a>
+  <a href="#install">Install</a>
+  <a href="#nav">Navigation</a>
+  <div class="group">modules</div>
+  <a href="#modules">All modules</a>
+  <a href="#ddos">DDoS engine</a>
+  <a href="#rat">RAT system</a>
+  <a href="#phishing">Phishing</a>
+  <a href="#filehider">File hider</a>
+  <a href="#social">Social media</a>
+  <a href="#ai">AI chatbot</a>
+  <div class="group">misc</div>
+  <a href="#faq">FAQ</a>
+  <a href="#disclaimer">Disclaimer</a>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<section id="overview">
+<div id="hero">
+<pre id="ascii">  </pre>
+
+<p class="tagline">
+  <strong>multi-tool v5</strong> by cameleonnbss ·
+  <strong>40+ modules</strong> ·
+  Python + Rust + C ·
+  Windows / Linux / Termux
+</p>
+<div class="badges">
+  <span class="badge badge-red">python 3.8+</span>
+  <span class="badge badge-red">windows · linux · termux</span>
+  <span class="badge badge-red">rust · c</span>
+  <span class="badge">ctf · pentest · educational</span>
+</div>
+</div>
+
+<p>All-in-one offensive security toolkit. Arrow-key animated UI with violet gradient. DDoS engine with 11 attack vectors. Python/Rust/C RAT system with its own C2 server. Built-in phishing pages. AI chatbot with 10 models including uncensored variants. OSINT, web vuln scanner, file hider, geo photo, and more.</p>
+
+<p>The tool is written entirely in Python (~7000 lines) with optional Rust and C components for the RAT system. No external tools required — everything is either built-in or auto-installed.</p>
+</section>
+
+<!-- INSTALL -->
+<section id="install">
+<h2><span class="prefix">01</span> Installation</h2>
+
+<div class="tabs">
+  <div class="tab on" onclick="tab(this,'ins','win')">Windows</div>
+  <div class="tab" onclick="tab(this,'ins','lin')">Linux / Kali</div>
+  <div class="tab" onclick="tab(this,'ins','tmx')">Termux</div>
+</div>
+
+<div id="ins-win" class="tab-body on">
+<div class="code-block">
+<pre>git clone https://github.com/cameleonnbss/all-in-one-multi-tool
+<span class="kw">cd</span> all-in-one-multi-tool
+install.bat
+python multi-tool.py</pre>
+<button class="copy" onclick="cp(this)">copy</button>
+</div>
+<p>Or manually: <code>pip install -r requirements.txt</code> then <code>python multi-tool.py</code></p>
+</div>
+
+<div id="ins-lin" class="tab-body">
+<div class="code-block">
+<pre>git clone https://github.com/cameleonnbss/all-in-one-multi-tool
+<span class="kw">cd</span> all-in-one-multi-tool
+bash install.sh
+python3 multi-tool.py</pre>
+<button class="copy" onclick="cp(this)">copy</button>
+</div>
+</div>
+
+<div id="ins-tmx" class="tab-body">
+<div class="code-block">
+<pre><span class="cm"># System deps</span>
+pkg update && pkg upgrade -y
+pkg install python git clang libffi openssl libjpeg-turbo -y
+
+<span class="cm"># Pillow (special flags on Termux)</span>
+CFLAGS="-I$(python3 -c 'import sysconfig; print(sysconfig.get_path("include"))')" \
+  pip install Pillow --no-binary :all:
+
+<span class="cm"># Tool</span>
+git clone https://github.com/cameleonnbss/all-in-one-multi-tool
+<span class="kw">cd</span> all-in-one-multi-tool
+pip install -r requirements-termux.txt
+python3 multi-tool.py</pre>
+<button class="copy" onclick="cp(this)">copy</button>
+</div>
+<p><code>pywin32</code>, <code>keyboard</code>, <code>pyautogui</code>, <code>scapy</code>, <code>impacket</code> are excluded from <code>requirements-termux.txt</code> — Windows/desktop only. The tool skips those features gracefully on Android.</p>
+</div>
+</section>
+
+<!-- NAVIGATION -->
+<section id="nav">
+<h2><span class="prefix">02</span> Navigation</h2>
+<p>The UI is a violet animated arrow-key menu. On first launch a matrix-style animation plays, then the menu appears. The layout adapts automatically to terminal width — on narrow terminals it wraps into multiple rows instead of one long line.</p>
+
+<table>
+<thead><tr><th>Key</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td><span class="k">↑</span> <span class="k">↓</span></td><td>Move up / down in column</td></tr>
+<tr><td><span class="k">←</span> <span class="k">→</span></td><td>Switch column</td></tr>
+<tr><td><span class="k">Enter</span></td><td>Launch selected module</td></tr>
+<tr><td><span class="k">M</span></td><td>Open text menu (fallback for non-TTY, Termux)</td></tr>
+<tr><td><span class="k">Q</span></td><td>Quit</td></tr>
+<tr><td><span class="k">W</span> <span class="k">S</span> <span class="k">A</span> <span class="k">D</span></td><td>WASD navigation (alternative to arrows)</td></tr>
+</tbody>
+</table>
+
+<p>Arrow keys use <code>os.read(fd, 1)</code> directly (not Python's buffered <code>stdin.read()</code>) to avoid input blocking on Linux/Termux. On Windows, <code>msvcrt.getch()</code> is used instead. Falls back gracefully to text menu if TTY is not available.</p>
+</section>
+
+<!-- MODULES -->
+<section id="modules">
+<h2><span class="prefix">03</span> All Modules</h2>
+<input id="search" type="text" placeholder="filter modules..." oninput="filter(this.value)">
+
+<div class="grid" id="grid">
+
+<div class="card" data-s="ddos flood attack l4 l7 udp syn slowloris hulk ultra">
+  <div class="card-top"><span class="card-id">01</span><span class="card-name">DDoS Flood</span></div>
+  <div class="card-cat">Attack</div>
+  <div class="card-desc">11 vectors — UDP, SYN, HTTP GET, Slowloris, POST, ICMP, HULK, R.U.D.Y, SSL, GET Auto, POST Auto. ULTRA mode runs all simultaneously at max threads.</div>
+</div>
+
+<div class="card" data-s="steam phishing login clone">
+  <div class="card-top"><span class="card-id">St</span><span class="card-name">Steam Phish</span></div>
+  <div class="card-cat">Attack</div>
+  <div class="card-desc">Cloned Steam login page. Captures credentials.</div>
+</div>
+
+<div class="card" data-s="discord stealer token cookie browser">
+  <div class="card-top"><span class="card-id">DS</span><span class="card-name">Discord Steal</span></div>
+  <div class="card-cat">Attack</div>
+  <div class="card-desc">Discord token extractor + browser cookie stealer (Chrome/Firefox). Sends to webhook.</div>
+</div>
+
+<div class="card" data-s="rat discord python rust c dropper reverse shell">
+  <div class="card-top"><span class="card-id">DR</span><span class="card-name">RAT System</span></div>
+  <div class="card-cat">Attack</div>
+  <div class="card-desc">3 options: Discord bot RAT / Rust TCP reverse shell (menu-driven) / C dropper (.exe ~80KB). Includes builder.py + C2 server.</div>
+</div>
+
+<div class="card" data-s="brute force ssh ftp rdp http">
+  <div class="card-top"><span class="card-id">05</span><span class="card-name">Brute Force</span></div>
+  <div class="card-cat">Attack</div>
+  <div class="card-desc">SSH, FTP, RDP, HTTP login brute force with custom wordlists.</div>
+</div>
+
+<div class="card" data-s="payload reverse shell generator msf msfvenom">
+  <div class="card-top"><span class="card-id">24</span><span class="card-name">Payload Gen</span></div>
+  <div class="card-cat">Attack</div>
+  <div class="card-desc">14 reverse shell types (Python, Bash, PHP, PowerShell, Node, Golang...) + MSFvenom + TTY upgrade guide.</div>
+</div>
+
+<div class="card" data-s="osint pro email username domain shodan breach">
+  <div class="card-top"><span class="card-id">02</span><span class="card-name">OSINT Pro</span></div>
+  <div class="card-cat">OSINT</div>
+  <div class="card-desc">Email (HIBP, Gravatar, MX records) · username (55+ platforms) · domain analysis · Shodan links · breach search engine.</div>
+</div>
+
+<div class="card" data-s="phone lookup carrier country timezone">
+  <div class="card-top"><span class="card-id">33</span><span class="card-name">Phone Lookup</span></div>
+  <div class="card-cat">OSINT</div>
+  <div class="card-desc">Carrier, country, timezone, line type (mobile/VoIP/landline). OSINT links: Truecaller, SpyDialer, CallerID...</div>
+</div>
+
+<div class="card" data-s="geo photo exif gps location coordinates maps">
+  <div class="card-top"><span class="card-id">11</span><span class="card-name">Geo Photo</span></div>
+  <div class="card-cat">OSINT</div>
+  <div class="card-desc">Extracts GPS coordinates from photo EXIF. Reverse geocodes to exact address (no API key). Outputs Google Maps / OSM / Earth links. Dumps all EXIF tags.</div>
+</div>
+
+<div class="card" data-s="public cameras rtsp mjpeg open">
+  <div class="card-top"><span class="card-id">34</span><span class="card-name">Pub Cameras</span></div>
+  <div class="card-cat">OSINT</div>
+  <div class="card-desc">Finds open RTSP/MJPEG camera feeds using Shodan-style queries.</div>
+</div>
+
+<div class="card" data-s="paste search pastebin ghostbin rentry">
+  <div class="card-top"><span class="card-id">35</span><span class="card-name">Paste Search</span></div>
+  <div class="card-cat">OSINT</div>
+  <div class="card-desc">Search Pastebin, Ghostbin, Rentry for leaked data.</div>
+</div>
+
+<div class="card" data-s="asn bgp lookup ip ranges">
+  <div class="card-top"><span class="card-id">36</span><span class="card-name">ASN Lookup</span></div>
+  <div class="card-cat">OSINT</div>
+  <div class="card-desc">AS number, BGP info, IP ranges from RIPE/ARIN/BGPView.</div>
+</div>
+
+<div class="card" data-s="wayback machine archive snapshot url extractor">
+  <div class="card-top"><span class="card-id">37</span><span class="card-name">Wayback</span></div>
+  <div class="card-cat">OSINT</div>
+  <div class="card-desc">Wayback Machine snapshots + CDX API URL extractor.</div>
+</div>
+
+<div class="card" data-s="xss injector payloads get post">
+  <div class="card-top"><span class="card-id">03</span><span class="card-name">XSS Injector</span></div>
+  <div class="card-cat">Web</div>
+  <div class="card-desc">20 XSS payloads. Tests GET and POST parameters automatically. Reports reflected payloads.</div>
+</div>
+
+<div class="card" data-s="sql injector sqli error boolean">
+  <div class="card-top"><span class="card-id">04</span><span class="card-name">SQL Injector</span></div>
+  <div class="card-cat">Web</div>
+  <div class="card-desc">Error-based and boolean-based SQLi detection with 20 payloads.</div>
+</div>
+
+<div class="card" data-s="vuln scanner xss sqli idor ssrf lfi cmdi ssti headers cookies">
+  <div class="card-top"><span class="card-id">06</span><span class="card-name">Vuln Scanner</span></div>
+  <div class="card-cat">Web</div>
+  <div class="card-desc">Crawls target, then tests every parameter for: XSS, SQLi, IDOR, Open Redirect, SSRF, LFI, Path Traversal, CMDi, SSTI. Checks headers, cookies, SSL.</div>
+</div>
+
+<div class="card" data-s="web hacking crawler forms js javascript secrets api">
+  <div class="card-top"><span class="card-id">14</span><span class="card-name">Web Hacking</span></div>
+  <div class="card-cat">Web</div>
+  <div class="card-desc">Crawler, form analyzer, JS variable/key extractor, API endpoint finder, tech detection (30+ signatures), DNS/IP lookup.</div>
+</div>
+
+<div class="card" data-s="ssrf scanner cloud metadata aws gcp">
+  <div class="card-top"><span class="card-id">29</span><span class="card-name">SSRF Scanner</span></div>
+  <div class="card-cat">Web</div>
+  <div class="card-desc">Tests parameters for SSRF via internal IPs (127.0.0.1, 169.254.169.254...). Detects cloud metadata exposure.</div>
+</div>
+
+<div class="card" data-s="xxe xml external entity inject">
+  <div class="card-top"><span class="card-id">28</span><span class="card-name">XXE Inject</span></div>
+  <div class="card-cat">Web</div>
+  <div class="card-desc">XML external entity injection payloads for file read, SSRF, blind OOB.</div>
+</div>
+
+<div class="card" data-s="port scanner tcp service detection">
+  <div class="card-top"><span class="card-id">08</span><span class="card-name">Port Scanner</span></div>
+  <div class="card-cat">Network</div>
+  <div class="card-desc">Fast concurrent TCP connect scan with service/banner detection.</div>
+</div>
+
+<div class="card" data-s="dns enum records axfr zone transfer">
+  <div class="card-top"><span class="card-id">09</span><span class="card-name">DNS Enum</span></div>
+  <div class="card-cat">Network</div>
+  <div class="card-desc">A, MX, NS, TXT, AAAA records + AXFR zone transfer attempt + subdomain brute force.</div>
+</div>
+
+<div class="card" data-s="wifi scanner deauth wps mac changer">
+  <div class="card-top"><span class="card-id">17</span><span class="card-name">WiFi Tools</span></div>
+  <div class="card-cat">Network</div>
+  <div class="card-desc">Network scanner (nmcli/netsh), deauth guide, WPS pin guide, MAC changer.</div>
+</div>
+
+<div class="card" data-s="packet sniffer capture live">
+  <div class="card-top"><span class="card-id">30</span><span class="card-name">Packet Sniff</span></div>
+  <div class="card-cat">Network</div>
+  <div class="card-desc">Live packet capture with scapy. Filter by protocol.</div>
+</div>
+
+<div class="card" data-s="arp spoofer mitm poisoning">
+  <div class="card-top"><span class="card-id">25</span><span class="card-name">ARP Spoofer</span></div>
+  <div class="card-cat">Network</div>
+  <div class="card-desc">ARP cache poisoning for MITM on local network. Requires scapy + root.</div>
+</div>
+
+<div class="card" data-s="ssl inspect certificate expiry san">
+  <div class="card-top"><span class="card-id">38</span><span class="card-name">SSL Inspect</span></div>
+  <div class="card-cat">Network</div>
+  <div class="card-desc">Certificate details, expiry days, SAN entries, issuer info.</div>
+</div>
+
+<div class="card" data-s="reverse shell generator 14 types tty">
+  <div class="card-top"><span class="card-id">16</span><span class="card-name">Rev Shell</span></div>
+  <div class="card-cat">Pentest+</div>
+  <div class="card-desc">14 shell types: Python, Bash, PHP, Perl, Ruby, PowerShell, Netcat, Socat, Node, Golang, Awk, Telnet, JSP, MSFvenom. TTY upgrade guide included.</div>
+</div>
+
+<div class="card" data-s="jwt decode forge none rs256 hs256">
+  <div class="card-top"><span class="card-id">20</span><span class="card-name">JWT Tool</span></div>
+  <div class="card-cat">Pentest+</div>
+  <div class="card-desc">Decode any JWT, forge with secret, alg:none exploit, RS256→HS256 confusion attack.</div>
+</div>
+
+<div class="card" data-s="subdomain takeover cname cloud">
+  <div class="card-top"><span class="card-id">21</span><span class="card-name">Sub Takeover</span></div>
+  <div class="card-cat">Pentest+</div>
+  <div class="card-desc">CNAME subdomain takeover detection for 40+ cloud services (Heroku, GitHub Pages, S3...).</div>
+</div>
+
+<div class="card" data-s="cve scanner vulnerability search product">
+  <div class="card-top"><span class="card-id">26</span><span class="card-name">CVE Scanner</span></div>
+  <div class="card-cat">Pentest+</div>
+  <div class="card-desc">CVE lookup by product name via NVD API. Lists CVEs with severity.</div>
+</div>
+
+<div class="card" data-s="wordlist generator custom target">
+  <div class="card-top"><span class="card-id">27</span><span class="card-name">Wordlist Gen</span></div>
+  <div class="card-cat">Pentest+</div>
+  <div class="card-desc">Generates custom wordlists from target info (name, birthdate, keywords, leet variants).</div>
+</div>
+
+<div class="card" data-s="hash encode md5 sha base64 caesar">
+  <div class="card-top"><span class="card-id">10</span><span class="card-name">Hash+Encode</span></div>
+  <div class="card-cat">Crypto</div>
+  <div class="card-desc">MD5, SHA1/256/512, Base64 encode/decode, Caesar cipher, ROT13, hash identifier (by length).</div>
+</div>
+
+<div class="card" data-s="file hider hide exe icon payload carrier launcher">
+  <div class="card-top"><span class="card-id">32</span><span class="card-name">File Hider</span></div>
+  <div class="card-cat">Crypto</div>
+  <div class="card-desc">Hide any file in any carrier (image/PDF/MP4/ZIP). Change .exe icon (PNG→ICO auto-convert). Generate auto-extract launcher. Scan for hidden payloads.</div>
+</div>
+
+<div class="card" data-s="breach check hibp dehashed intelx">
+  <div class="card-top"><span class="card-id">39</span><span class="card-name">Breach Check</span></div>
+  <div class="card-cat">Crypto</div>
+  <div class="card-desc">HIBP (Have I Been Pwned), DeHashed, IntelX — email + password breach lookup.</div>
+</div>
+
+<div class="card" data-s="steganography lsb hide extract png">
+  <div class="card-top"><span class="card-id">19</span><span class="card-name">Steganography</span></div>
+  <div class="card-cat">Crypto</div>
+  <div class="card-desc">LSB (Least Significant Bit) hide message in PNG, extract hidden message, string extractor from binary.</div>
+</div>
+
+<div class="card" data-s="ai chatbot openrouter dolphin hermes nemotron uncensored">
+  <div class="card-top"><span class="card-id">12</span><span class="card-name">AI Chatbot</span></div>
+  <div class="card-cat">Recon</div>
+  <div class="card-desc">10 models via OpenRouter (free). Dolphin Venice (zero filter), Hermes 405B (low-refusal), Nemotron 253B. DAN mode. Auto-fallback if model fails. Streaming output.</div>
+</div>
+
+<div class="card" data-s="phishing instagram facebook google discord tiktok microsoft">
+  <div class="card-top"><span class="card-id">15</span><span class="card-name">Phishing</span></div>
+  <div class="card-cat">Recon</div>
+  <div class="card-desc">6 built-in cloned pages: Instagram, Facebook, Google, Discord, TikTok, Microsoft. Python HTTP server, no bash. Creds saved live + logged to file. Optional ngrok tunnel.</div>
+</div>
+
+<div class="card" data-s="social media tiktok info followers mass reporter">
+  <div class="card-top"><span class="card-id">13</span><span class="card-name">Social Media</span></div>
+  <div class="card-cat">Recon</div>
+  <div class="card-desc">TikTok: followers, following, likes, country, language, creation date, verified status. Mass reporter with auto HTTP for Instagram/TikTok/Twitter + manual links for 12 platforms.</div>
+</div>
+
+<div class="card" data-s="shodan search api">
+  <div class="card-top"><span class="card-id">22</span><span class="card-name">Shodan</span></div>
+  <div class="card-cat">Recon</div>
+  <div class="card-desc">Shodan device search, host lookup, CVE search via Shodan API.</div>
+</div>
+
+</div>
+</section>
+
+<!-- DDOS -->
+<section id="ddos">
+<h2><span class="prefix">04</span> DDoS Engine</h2>
+
+<p>Port is auto-detected from the URL — no need to enter it manually. <code>https://</code> → 443, <code>http://</code> → 80, explicit port in URL is preserved. For L4 methods (UDP, SYN, Slowloris, SSL) a prompt shows the detected port and lets you override.</p>
+
+<table>
+<thead><tr><th>Key</th><th>Method</th><th>Layer</th><th>How it works</th></tr></thead>
+<tbody>
+<tr><td><code>1</code></td><td>UDP Flood</td><td>L4</td><td>1024-byte random UDP datagrams to target:port</td></tr>
+<tr><td><code>2</code></td><td>TCP SYN Flood</td><td>L4</td><td>Half-open TCP connections, exhausts connection table</td></tr>
+<tr><td><code>3</code></td><td>HTTP GET Flood</td><td>L7</td><td>High-RPS GET requests, random User-Agent</td></tr>
+<tr><td><code>4</code></td><td>Slowloris</td><td>L7</td><td>Keeps sockets open with partial headers, drains worker pool</td></tr>
+<tr><td><code>5</code></td><td>HTTP POST Flood</td><td>L7</td><td>Large form POST bodies, exhausts app/DB parsers</td></tr>
+<tr><td><code>6</code></td><td>R.U.D.Y</td><td>L7</td><td>POST body sent 1 byte per ~12s, ties up worker threads indefinitely</td></tr>
+<tr><td><code>7</code></td><td>DNS Amplification</td><td>L7</td><td>Floods recursive DNS resolvers with ANY queries</td></tr>
+<tr><td><code>8</code></td><td>ICMP Flood</td><td>L3</td><td>Ping with 1400-byte payload via subprocess</td></tr>
+<tr><td><code>9</code></td><td>SSL Renegotiation</td><td>L7</td><td>Repeated TLS handshakes to exhaust server CPU</td></tr>
+<tr><td><code>B</code></td><td>HULK</td><td>L7</td><td>Random GET with unique query strings — bypasses cache entirely</td></tr>
+<tr><td><code>C</code></td><td>GET Flood Auto</td><td>L7</td><td>Timed flood with HTTP connection pooling (100 keep-alive connections)</td></tr>
+<tr><td><code>D</code></td><td>POST Flood Auto</td><td>L7</td><td>Timed POST flood with random JSON payloads, connection pooling</td></tr>
+<tr class="ultra"><td>⚡ E</td><td>ULTRA — all 11</td><td>ALL</td><td>Launches all 11 vectors simultaneously at max threads. 50 threads per vector minimum (or cpu_count × 8). Live pkt/s counter.</td></tr>
+</tbody>
+</table>
+
+<h3>Mode A — combined (9 vectors)</h3>
+<p>Threads are split equally between 9 vectors. Use ULTRA <code>E</code> instead for maximum power — it uses 50+ threads per vector regardless.</p>
+</section>
+
+<!-- RAT -->
+<section id="rat">
+<h2><span class="prefix">05</span> RAT System</h2>
+
+<p>Three options with different tradeoffs. All receive data at your C2 server — no Discord, no third party.</p>
+
+<div class="rat-grid">
+  <div class="rat-card">
+    <h4>Simple Dropper</h4>
+    <div class="row"><span>Platform</span><span>Win + Linux</span></div>
+    <div class="row"><span>Victim deps</span><span>Python (py) or none (exe)</span></div>
+    <div class="row"><span>Interactive</span><span>No — auto runs</span></div>
+    <div class="row"><span>C2</span><span>HTTP server</span></div>
+    <div class="row"><span>Collects</span><span>sysinfo · screenshot · webcam · keylog · wifi · files · zip</span></div>
+    <div class="row"><span>Persistence</span><span>Registry / crontab</span></div>
+  </div>
+  <div class="rat-card">
+    <h4>Rust RAT</h4>
+    <div class="row"><span>Platform</span><span>Win 7+ · Linux</span></div>
+    <div class="row"><span>Victim deps</span><span>Zero</span></div>
+    <div class="row"><span>Interactive</span><span>Yes — numbered menu</span></div>
+    <div class="row"><span>C2</span><span>netcat listener</span></div>
+    <div class="row"><span>Size</span><span>~200KB compiled</span></div>
+    <div class="row"><span>AV</span><span>Low detection</span></div>
+  </div>
+  <div class="rat-card">
+    <h4>C Dropper</h4>
+    <div class="row"><span>Platform</span><span>Windows only</span></div>
+    <div class="row"><span>Victim deps</span><span>Zero</span></div>
+    <div class="row"><span>Interactive</span><span>No — auto runs</span></div>
+    <div class="row"><span>C2</span><span>HTTP server</span></div>
+    <div class="row"><span>Size</span><span>~80KB</span></div>
+    <div class="row"><span>Screenshot</span><span>GDI (no deps)</span></div>
+  </div>
+</div>
+
+<h3>Workflow</h3>
+<div class="code-block">
+<pre><span class="cm"># 1. Start C2 server on your machine</span>
+python rat/c2/server.py
+<span class="cm"># → choose [1] local or [2] ngrok</span>
+<span class="cm"># → shows URL like http://192.168.1.10:8080</span>
+
+<span class="cm"># 2. Build payload</span>
+python rat/builder.py
+<span class="cm"># → enter C2 URL</span>
+<span class="cm"># → [1] Python payload or [2] C dropper</span>
+<span class="cm"># → generates payload.py (or dropper.exe)</span>
+
+<span class="cm"># 3. Send file to victim — they open it</span>
+<span class="cm"># → loot/ fills up on your machine automatically</span></pre>
+<button class="copy" onclick="cp(this)">copy</button>
+</div>
+
+<h3>Loot folder structure</h3>
+<div class="code-block">
+<pre>loot/
+├── VICTIM-PC/
+│   ├── sysinfo.txt       <span class="cm"># hostname · user · OS · IP · admin</span>
+│   ├── screenshot.png    <span class="cm"># screen capture on connect</span>
+│   ├── webcam.jpg        <span class="cm"># webcam photo on connect</span>
+│   ├── keylog.txt        <span class="cm"># appended every 30s</span>
+│   ├── wifi.txt          <span class="cm"># all saved wifi passwords</span>
+│   └── files.txt         <span class="cm"># Desktop / Downloads / Documents</span>
+└── VICTIM-PC.zip         <span class="cm"># full archive, sent every hour</span></pre>
+</div>
+
+<h3>Rust RAT — menu commands</h3>
+<p>Run <code>nc -lvnp 4444</code> as listener. When victim connects, type the number:</p>
+<div class="code-block">
+<pre>[1]  Sysinfo          [2]  Screenshot      [3]  Webcam snapshot
+[4]  Keylogger 30s    [5]  List files       [6]  Browse directory
+[7]  Download file    [8]  Run command      [9]  List processes
+[10] Kill process    [11]  Wifi passwords  [12]  Browser passwords
+[13] Persistence     [14]  Free shell       [0]  Disconnect</pre>
+</div>
+<p>Auto-reconnects every 5 seconds if listener is down. On Windows runs with <code>CREATE_NO_WINDOW</code> flag — no console visible.</p>
+
+<h3>Compile Rust RAT</h3>
+<div class="code-block">
+<pre><span class="cm"># Edit C2_HOST and C2_PORT in rat/rat.rs first</span>
+rustc rat/rat.rs -o rat.exe -O          <span class="cm"># Windows</span>
+rustc rat/rat.rs -o rat      -O          <span class="cm"># Linux</span>
+
+<span class="cm"># Cross-compile Windows .exe from Linux</span>
+rustup target add x86_64-pc-windows-gnu
+rustc --target x86_64-pc-windows-gnu rat/rat.rs -o rat.exe -O</pre>
+<button class="copy" onclick="cp(this)">copy</button>
+</div>
+
+<h3>Compile C Dropper</h3>
+<div class="code-block">
+<pre><span class="cm"># Linux → Windows (install mingw-w64 first)</span>
+sudo apt install mingw-w64
+x86_64-w64-mingw32-gcc rat/dropper.c -o dropper.exe \
+  -lwinhttp -lws2_32 -lgdi32 -lole32 -luuid -mwindows -O2
+
+<span class="cm"># Or use builder.py → [2] C (auto-patches + auto-compiles)</span>
+python rat/builder.py</pre>
+<button class="copy" onclick="cp(this)">copy</button>
+</div>
+</section>
+
+<!-- PHISHING -->
+<section id="phishing">
+<h2><span class="prefix">06</span> Phishing Engine</h2>
+
+<p>Built-in Python HTTP server — no bash, no ZPhisher, no external tools. Works on Windows, Linux and Termux without modification. All pages are pixel-accurate clones embedded directly in the Python source.</p>
+
+<table>
+<thead><tr><th>Page</th><th>Features</th></tr></thead>
+<tbody>
+<tr><td>Instagram</td><td>Mobile-friendly, correct fonts</td></tr>
+<tr><td>Facebook</td><td>Full desktop layout with sidebar</td></tr>
+<tr><td>Google</td><td>Material Design login flow</td></tr>
+<tr><td>Discord</td><td>Dark theme, correct color scheme</td></tr>
+<tr><td>TikTok</td><td>Mobile-first, logo + form</td></tr>
+<tr><td>Microsoft</td><td>Fluent design, two-step layout</td></tr>
+</tbody>
+</table>
+
+<p>When victim submits: credentials printed live in terminal, saved to <code>phish_&lt;platform&gt;_&lt;timestamp&gt;.txt</code>, victim redirected to real site (transparent). Optional ngrok tunnel for public URL — uses pyngrok, auto-installed.</p>
+
+<h3>How to use</h3>
+<div class="code-block">
+<pre><span class="cm"># From the UI: select [15] Phishing</span>
+<span class="cm"># → pick page (1-6)</span>
+<span class="cm"># → enter local port (default 8080)</span>
+<span class="cm"># → optionally enter ngrok token for public URL</span>
+<span class="cm"># → server starts, credentials appear live</span></pre>
+</div>
+</section>
+
+<!-- FILE HIDER -->
+<section id="filehider">
+<h2><span class="prefix">07</span> File Hider</h2>
+
+<p>Hides any file inside any carrier using a magic marker appended to the end of the carrier. The output file opens normally as the carrier type — a JPG opens as an image, a PDF opens in a PDF reader. Extraction finds the marker from the end of the file.</p>
+
+<table>
+<thead><tr><th>Option</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>[1]</code> Hide</td><td>Embed any payload (.exe .py .sh .zip...) inside any carrier (image · PDF · MP4 · ZIP...)</td></tr>
+<tr><td><code>[2]</code> Extract</td><td>Recover hidden payload. Validates size against stored header.</td></tr>
+<tr><td><code>[3]</code> Scan</td><td>Detect hidden payload — reports name, size, and byte offset.</td></tr>
+<tr><td><code>[4]</code> Icon</td><td>Change .exe icon from .ico or .png/.jpg. Auto-converts image to multi-size .ico (16/32/48/64/128/256px). Uses pywin32 or Resource Hacker fallback.</td></tr>
+<tr><td><code>[5]</code> Launcher</td><td>Generate a .py that auto-extracts and runs the payload silently. Optionally keeps or deletes after execution.</td></tr>
+</tbody>
+</table>
+
+<p>The tool validates all paths before proceeding — if the file doesn't exist it re-prompts instead of crashing.</p>
+</section>
+
+<!-- SOCIAL -->
+<section id="social">
+<h2><span class="prefix">08</span> Social Media</h2>
+
+<h3>TikTok Account Info</h3>
+<p>Scrapes TikTok's embedded <code>SIGI_STATE</code> JSON — no API key, no account needed. Falls back to regex if page structure changes.</p>
+<table>
+<thead><tr><th>Field</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td>Followers / Following / Likes / Videos</td><td><code>followerCount</code>, <code>followingCount</code>, <code>heartCount</code>, <code>videoCount</code></td></tr>
+<tr><td>Country / Region</td><td><code>region</code> field</td></tr>
+<tr><td>Language</td><td><code>language</code> field</td></tr>
+<tr><td>Creation date</td><td><code>createTime</code> Unix timestamp → formatted date</td></tr>
+<tr><td>Verified / Private</td><td><code>verified</code>, <code>privateAccount</code> booleans</td></tr>
+</tbody>
+</table>
+
+<h3>Mass Reporter</h3>
+<p>Automated HTTP reports for platforms that expose a public report endpoint:</p>
+<ul style="margin:8px 0 14px 18px;color:var(--text);line-height:2">
+  <li>Instagram — POST to <code>/users/{target}/flag/</code></li>
+  <li>TikTok — POST to <code>/api/feedback/</code> with reason: spam</li>
+  <li>Twitter/X — POST to <code>/1.1/users/report_spam.json</code></li>
+</ul>
+<p>All other platforms (Facebook, YouTube, Snapchat, Twitch, Discord, Reddit, Steam, Pinterest, LinkedIn) — direct report links opened automatically.</p>
+</section>
+
+<!-- AI -->
+<section id="ai">
+<h2><span class="prefix">09</span> AI Chatbot</h2>
+
+<p>Uses <a href="https://openrouter.ai/keys">OpenRouter</a> free tier. Get a key at openrouter.ai/keys — no payment, just an account. Key is saved locally in <code>~/.config/allintool/keys/</code>.</p>
+
+<table>
+<thead><tr><th>Model</th><th>ID</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Gemma 4 26B</td><td><code>google/gemma-4-26b-a4b-it:free</code></td><td>Default</td></tr>
+<tr><td>Gemma 4 31B</td><td><code>google/gemma-4-31b-it:free</code></td><td></td></tr>
+<tr><td>Dolphin Venice 24B</td><td><code>cognitivecomputations/dolphin-mistral-24b-venice-edition:free</code></td><td>Zero filter, no refusals</td></tr>
+<tr><td>Hermes 3 405B</td><td><code>nousresearch/hermes-3-llama-3.1-405b:free</code></td><td>Low-refusal, 405B params</td></tr>
+<tr><td>Nemotron Ultra 253B</td><td><code>nvidia/llama-3.1-nemotron-ultra-253b-v1:free</code></td><td>NVIDIA, 253B params</td></tr>
+<tr><td>Llama 3.3 70B</td><td><code>meta-llama/llama-3.3-70b-instruct:free</code></td><td>Meta</td></tr>
+<tr><td>Qwen3 Coder</td><td><code>qwen/qwen3-coder:free</code></td><td>Code focus</td></tr>
+</tbody>
+</table>
+
+<p>Auto-fallback — if the selected model fails (rate limit, error, empty response), the tool automatically tries the next model in the fallback chain without interrupting the conversation.</p>
+
+<p>Responses stream in real-time. History kept for up to 20 messages.</p>
+
+<h3>In-chat commands</h3>
+<table>
+<thead><tr><th>Command</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td><code>/model</code></td><td>Show model list and switch</td></tr>
+<tr><td><code>/style</code></td><td>Switch preset (uncensored · hacker · coder · ctf · explain)</td></tr>
+<tr><td><code>/clear</code></td><td>Reset conversation history</td></tr>
+<tr><td><code>/history</code></td><td>Print full conversation</td></tr>
+<tr><td><code>/save</code></td><td>Export chat to .md file</td></tr>
+<tr><td><code>/exit</code></td><td>Back to main menu</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+<h2><span class="prefix">10</span> FAQ</h2>
+
+<h3>Arrow keys don't work on Termux</h3>
+<p>Press <span class="k">M</span> to switch to the text menu. The arrow-key UI requires a real TTY — Termux may not provide one if the script is launched from a non-interactive context. The text menu has full feature parity. Alternatively, use WASD keys as arrows.</p>
+
+<h3>How to get an OpenRouter key</h3>
+<p>Go to <a href="https://openrouter.ai/keys">openrouter.ai/keys</a>, create a free account, generate a key. Paste it on first launch of the AI Chatbot module. It's saved locally and not transmitted anywhere except OpenRouter's API.</p>
+
+<h3>Rust RAT — does it need Python on the victim machine?</h3>
+<p>No. The Rust RAT compiles to a standalone native binary with zero dependencies. A Windows <code>.exe</code> works on any Windows 7/8/10/11 x64 machine. A Linux binary works on any x64 Linux. Nothing to install on the victim side.</p>
+
+<h3>How to compile the C dropper on Linux</h3>
+<div class="code-block">
+<pre>sudo apt install mingw-w64
+x86_64-w64-mingw32-gcc rat/dropper.c -o dropper.exe \
+  -lwinhttp -lws2_32 -lgdi32 -lole32 -luuid -mwindows -O2</pre>
+<button class="copy" onclick="cp(this)">copy</button>
+</div>
+<p>Or use <code>rat/builder.py → [2] C</code> which patches the C2 URL into the source and compiles automatically.</p>
+
+<h3>Scapy / impacket not installing on Termux</h3>
+<p>Use <code>requirements-termux.txt</code> which excludes them. Scapy requires raw sockets (root + kernel support not available on Android). The tool detects missing modules at runtime and skips those features gracefully.</p>
+
+<h3>The phishing page says "invalid webhook"</h3>
+<p>The phishing engine no longer uses Discord webhooks — it uses the built-in C2 server (<code>rat/c2/server.py</code>) or just saves credentials locally. No webhook URL needed.</p>
+</section>
+
+<!-- DISCLAIMER -->
+<section id="disclaimer">
+<h2><span class="prefix">11</span> Disclaimer</h2>
+<div class="disclaimer">
+  <strong>For authorized penetration testing, CTF competitions, and educational use only.</strong><br><br>
+  Do not use this tool against systems you do not own or have explicit written permission to test.<br>
+  The author (cameleonnbss) is not responsible for any illegal or unethical use of this software.<br><br>
+  Using this tool against unauthorized targets may violate local, national, or international laws.<br>
+  You assume full responsibility for your actions.
+</div>
+</section>
+
+</main>
+
+<script>
+// tabs
+function tab(btn, group, id) {
+  document.querySelectorAll('[id^="' + group + '-"]').forEach(el => el.classList.remove('on'));
+  btn.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.getElementById(group + '-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+// copy
+function cp(btn) {
+  const text = btn.previousElementSibling.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'copied';
+    btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('ok'); }, 2000);
+  });
+}
+
+// filter modules
+function filter(q) {
+  q = q.toLowerCase();
+  document.querySelectorAll('.card').forEach(c => {
+    const match = !q || (c.dataset.s + ' ' + c.textContent).toLowerCase().includes(q);
+    c.classList.toggle('gone', !match);
+  });
+}
+
+// active sidebar link
+const all = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('#sidebar a');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('on'));
+      const a = document.querySelector('#sidebar a[href="#' + e.target.id + '"]');
+      if (a) a.classList.add('on');
+    }
+  });
+}, { threshold: 0.2, rootMargin: '-10% 0px -70% 0px' });
+all.forEach(s => io.observe(s));
+</script>
+</body>
+</html>
