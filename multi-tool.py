@@ -27,7 +27,6 @@ except ImportError:
 
 import math as _math_ui, ctypes as _ctypes_ui
 
-# ── Win32 console direct write (bypass Python stdout + colorama) ──────
 if sys.platform == "win32":
     _k32 = _ctypes_ui.windll.kernel32
     _k32.SetConsoleOutputCP(65001)
@@ -125,7 +124,6 @@ def _kbhit_u(t=0):
         return False
 
 def _getch_u():
-    # Use os.read() directly — bypasses Python buffering (fixes Linux/Termux)
     if not _UNIX_TTY or not sys.stdin.isatty():
         return None
     try:
