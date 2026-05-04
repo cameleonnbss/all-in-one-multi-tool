@@ -7,7 +7,6 @@ echo   camzzz Multi-Tool v5  --  Installer
 echo  ========================================
 echo.
 
-:: Check Python
 python --version >nul 2>&1
 if %errorlevel% neq 0 (
     echo  [!] Python not found. Download: https://www.python.org/downloads/
