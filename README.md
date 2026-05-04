@@ -51,7 +51,7 @@ pkg install python git clang libffi openssl libjpeg-turbo -y
 git clone https://github.com/cameleonnbss/camzzz-multitool
 cd camzzz-multitool
 pip install -r requirements-termux.txt
-python3 multi-tool.py
+python multi-tool.py
 ```
 
 ---
