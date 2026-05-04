@@ -1,0 +1,41 @@
+# ── Termux requirements ───────────────────────────────────────────────────────
+# Install via:  pip install -r requirements-termux.txt
+#
+# Modules NOT compatible with Termux are excluded:
+#   pywin32       -> Windows only
+#   python-magic-bin -> Windows only (use python-magic instead)
+#   scapy         -> needs root + raw sockets (limited on Android)
+#   impacket      -> install manually if needed (often fails on arm)
+#   keyboard      -> requires /dev/input access (not available on Termux)
+#   pyautogui     -> requires display (use only with X11/VNC)
+#   opencv-python -> use opencv-python-headless instead
+#   pefile        -> Windows PE files only (install manually if needed)
+
+# ── Core ──────────────────────────────────────────────────────────────────────
+requests
+colorama
+beautifulsoup4
+dnspython
+phonenumbers
+
+# ── Media / Files ─────────────────────────────────────────────────────────────
+Pillow
+
+# ── Crypto / Security ─────────────────────────────────────────────────────────
+cryptography
+
+# ── Web / Server ──────────────────────────────────────────────────────────────
+flask
+pyngrok
+
+# ── Database ──────────────────────────────────────────────────────────────────
+pymysql
+
+# ── SSH ───────────────────────────────────────────────────────────────────────
+paramiko
+
+# ── Discord ───────────────────────────────────────────────────────────────────
+discord-webhook
+
+# ── System ────────────────────────────────────────────────────────────────────
+psutil

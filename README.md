@@ -1,212 +1,218 @@
-# 🛠️ ALL IN ONE TOOL v5
+<div align="center">
 
-> All-In-One Hacking Toolkit — 40+ modules, UI violet animée, modules inline, AI chatbot avec fallback automatique.
+```
+     ___   _     _      ___  _  _      ___  _  _  ___
+    / _ \ | |   | |    |_ _|| \| |    / _ \| \| || __|  camzzz
+   | (_) || |__ | |__   | | | .` |   | (_) || .` || _|   v5
+    \___/ |____||____|  |___||_|\_|   \___/ |_|\_||___|
+```
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)
-![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS%20%7C%20Termux-lightgrey)
-![Modules](https://img.shields.io/badge/Modules-40%2B-green)
-![AI](https://img.shields.io/badge/AI-Uncensored-red)
-![Status](https://img.shields.io/badge/Status-Active-brightgreen)
-![License](https://img.shields.io/badge/License-Educational%20Only-red)
+**All-in-one offensive security toolkit**
+
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white)
+![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20Termux-brightgreen)
+![Language](https://img.shields.io/badge/Also%20in-Rust%20%7C%20C-orange)
+![License](https://img.shields.io/badge/Use-Authorized%20Pentest%20%2F%20CTF%20only-red)
+
+</div>
 
 ---
 
-## ⚡ Quick Start
+## What's inside
 
-### Windows — Setup automatique
+| File | Description |
+|------|-------------|
+| `multi-tool.py` | Main toolkit — 40+ modules, arrow-key UI |
+| `rat/builder.py` | Payload builder — generates victim file |
+| `rat/c2/server.py` | C2 server — receives loot from victims |
+| `rat/rat.rs` | Rust RAT — TCP reverse shell, menu-driven |
+| `rat/dropper.c` | C dropper — standalone Windows .exe |
+| `requirements.txt` | Python dependencies |
+| `requirements-termux.txt` | Termux-compatible subset |
+| `install.bat` | One-click installer (Windows) |
+
+---
+
+## Quick start
+
+### Windows
 ```bat
-setup.bat
+git clone https://github.com/cameleonnbss/camzzz-multitool
+cd camzzz-multitool
+install.bat
+python multi-tool.py
 ```
 
-### Manuel (tous OS)
+### Linux
 ```bash
-git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
-cd all-in-one-multi-tool
+git clone https://github.com/cameleonnbss/camzzz-multitool
+cd camzzz-multitool
 pip install -r requirements.txt
-python multi-tooV5-fixed.py
+python3 multi-tool.py
 ```
 
----
-
-## 🚀 Installation par OS
-
-### 🐧 Linux (Ubuntu / Debian / Kali)
-```bash
-git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
-cd all-in-one-multi-tool
-pip3 install -r requirements.txt --break-system-packages
-python3 multi-toolV5.py
-```
-
-### 🍎 macOS
-```bash
-brew install git python
-git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
-cd all-in-one-multi-tool
-python3 -m venv venv && source venv/bin/activate
-pip install -r requirements.txt
-python3 multi-toolV5.py
-```
-
-### 🪟 Windows
-Double-clique sur `setup.bat` — installe tout et lance le tool.
-
-Ou manuellement :
-```powershell
-pip install -r requirements.txt
-python multi-toolV5.py
-```
-
-### 📱 Termux (Android)
+### Termux (Android)
 ```bash
 pkg update && pkg upgrade -y
-pkg install git python -y
-git clone https://github.com/cameleonnbss/all-in-one-multi-tool.git
-cd all-in-one-multi-tool
-pip install -r requirements.txt
-python multi-toolV5.py
-```
-
-> Les modules 17 (WiFi), 25 (ARP), 30 (Packet Sniff) nécessitent root sur Termux.
-
----
-
-## 🗂️ Modules — v5 (40+)
-
-### ⚔️ Attack
-| # | Module | Description |
-|---|--------|-------------|
-| 01 | DDoS Flood | 9 techniques : UDP · SYN · HTTP · Slowloris · POST · RUDY · DNS · ICMP · SSL |
-| 03 | XSS Injector | 20+ payloads GET/POST |
-| 04 | SQL Injector | Error-based + time-based |
-| 05 | Brute Force | SSH · FTP · HTTP · WordPress · SMB · MySQL · RDP |
-| 25 | ARP Spoofer | MITM Layer 2 |
-| 28 | XXE Injection | 7 payloads dont Billion Laughs |
-| 29 | SSRF Scanner | AWS/GCP metadata probes |
-| St | Steam Phishing | Page login Steam via ngrok (inline) |
-| DS | Discord Stealer | Cookies Firefox/Chrome + tokens Discord → webhook (inline) |
-| DR | Discord RAT | Bot C2 via Discord — !cmd !webcam !keylogger... (inline) |
-
-### 🔍 OSINT & Recon
-| # | Module | Description |
-|---|--------|-------------|
-| 02 | OSINT Pro | Email · phone · username · Google dorks |
-| 06 | Vuln Scanner | Headers, SSL, CORS, cookies, .git |
-| 07 | Network Scanner | Ping sweep, traceroute, whois, geoip |
-| 08 | Port Scanner | 25 ports + banner grab |
-| 09 | DNS Enum | A/MX/NS/TXT/subdomains |
-| 21 | Sub Takeover | 13 providers |
-| 22 | Shodan | Query + host info |
-| 26 | CVE Scanner | NVD API + banner |
-| 30 | Packet Sniff | HTTP creds / DNS |
-| 32 | TechInt | Stack fingerprinting |
-| 33 | Phone Lookup | Carrier · timezone · OSINT links |
-| 34 | Pub Cameras | Shodan/Insecam dorks |
-| 36 | ASN Lookup | Network owner |
-| 37 | Wayback | URL archive discovery |
-| 38 | SSL Inspector | Cert + SAN dump |
-
-### 🔐 Crypto & Forensics
-| # | Module |
-|---|--------|
-| 10 | Hash & Encode — MD5/SHA/NTLM + Base64/Hex |
-| 11 | Crypto Tools — AES-256, RSA, Caesar brute, HMAC, XOR |
-| 19 | Steganography — LSB hide/extract |
-| 20 | JWT Tool — decode, none-alg, brute HS256 |
-| 23 | File + Virus Scanner — magic bytes, hashes, entropy, VirusTotal |
-| 31 | Image Meta — EXIF + GPS → Google Maps |
-| 40 | Hash Cracker — dict attack MD5/SHA1/SHA256 |
-
-### 💣 Offensive
-| # | Module |
-|---|--------|
-| 14 | Web Hacking Suite — directory buster |
-| 15 | Phishing Tools |
-| 16 | Rev Shell — 14 langages |
-| 17 | WiFi Tools — aircrack-ng suite |
-| 18 | Metasploit Helper — cheatsheet msfvenom |
-| 24 | Payload Gen — msfvenom wrapper + XOR/PS |
-| 27 | Wordlist Gen — leet + mutations |
-
-### 🤖 AI & Extra
-| # | Module |
-|---|--------|
-| 12 | AI Chatbot — fallback automatique sur 10 modèles |
-| 13 | Social Media — 50+ plateformes |
-| 35 | Paste Search — Pastebin/Ghostbin/IntelX |
-| 39 | Breach Check — HIBP + leaks |
-
----
-
-## 🤖 AI Chatbot (module 12)
-
-Fallback automatique : si un modèle est en 429/404, passe au suivant jusqu'à obtenir une réponse.
-
-**Modèles disponibles :**
-
-| Statut | Modèle |
-|--------|--------|
-| ✅ Actif | Gemma 4 26B · Gemma 4 31B · Nemotron 120B · GPT-OSS 120B |
-| 🔄 Selon quota | Dolphin Venice 24B · Hermes 3 405B · Llama 3.3 70B · Qwen3 Coder |
-
-**Setup :** clé OpenRouter gratuite → [openrouter.ai/keys](https://openrouter.ai/keys)
-
-**Commandes in-chat :**
-```
-/model    changer de modèle
-/style    uncensored / hacker / coder / ctf / explain
-/clear    reset historique
-/history  voir la conversation
-/save     sauvegarder en markdown
-/exit     retour au menu
+pkg install python git clang libffi openssl libjpeg-turbo -y
+git clone https://github.com/cameleonnbss/camzzz-multitool
+cd camzzz-multitool
+pip install -r requirements-termux.txt
+python3 multi-tool.py
 ```
 
 ---
 
-## 📦 Dépendances
+## Navigation
 
-```
-requests  colorama  beautifulsoup4  dnspython  phonenumbers
-cryptography  Pillow  scapy  paramiko  pymysql  impacket
-flask  pyngrok
-```
+The main tool has a **violet arrow-key UI**:
 
-Optionnel (Discord RAT) : `discord.py  keyboard  pyautogui  opencv-python  pywin32`
-
-### Outils système (non-pip)
-
-| Outil | Install | Module |
-|-------|---------|--------|
-| `aircrack-ng` | `sudo apt install aircrack-ng` | 17 WiFi |
-| `msfvenom` | Metasploit Framework | 18, 24 |
-| `traceroute/whois` | `sudo apt install traceroute whois` | 07 |
+| Key | Action |
+|-----|--------|
+| `↑` `↓` | Move in column |
+| `←` `→` | Switch column |
+| `Enter` | Launch module |
+| `M` | Text menu (fallback) |
+| `Q` | Quit |
 
 ---
 
-## 🖥️ Compatibilité
+## Modules
 
-| Module | Linux | Windows | macOS | Termux |
-|--------|:-----:|:-------:|:-----:|:------:|
-| Core (tous) | ✅ | ✅ | ✅ | ✅ |
-| DDoS (9 vecteurs) | ✅ | ✅ | ✅ | ✅ |
-| WiFi / ARP / Sniff | ✅ | ❌ | ⚠️ | root |
-| Discord RAT | ✅ | ✅ | ✅ | ✅ |
-| Steam Phishing | ✅ | ✅ | ✅ | ✅ |
-| AI Chatbot | ✅ | ✅ | ✅ | ✅ |
-| Port / Net Scanner | ✅ | ✅ | ✅ | ✅ |
+### Attack
+| Module | Description |
+|--------|-------------|
+| **DDoS Flood** | 11 vectors — UDP, SYN, HTTP, Slowloris, POST, ICMP, HULK, R.U.D.Y, SSL. Mode `[E]` ULTRA launches all at max threads |
+| Steam Phish | Steam login phishing page |
+| Discord Steal | Token + cookie stealer |
+| **Discord RAT** | Python bot RAT / Rust TCP RAT / Simple dropper |
+| Brute Force | SSH, FTP, RDP, HTTP |
+| Payload Gen | Reverse shells, MSFvenom |
+
+### OSINT
+| Module | Description |
+|--------|-------------|
+| **OSINT Pro** | Email, username, domain, Shodan, breaches |
+| Phone Lookup | Carrier, country, timezone |
+| Pub Cameras | Open RTSP feeds |
+| Paste Search | Pastebin / ghostbin |
+| ASN Lookup | BGP, IP ranges |
+| Wayback | Wayback Machine |
+
+### Web
+| Module | Description |
+|--------|-------------|
+| XSS Injector | 20 payloads, GET + POST |
+| SQL Injector | Error-based, boolean |
+| Vuln Scanner | XSS, SQLi, IDOR, SSRF, LFI, CMDi, SSTI, headers |
+| Web Hacking | Crawler, forms, JS secrets |
+| SSRF Scanner | Internal redirect, cloud metadata |
+| XXE Inject | XML external entity |
+
+### Network
+| Module | Description |
+|--------|-------------|
+| Port Scanner | TCP connect, service detection |
+| DNS Enum | A, MX, NS, TXT, AXFR |
+| WiFi Tools | Scanner, deauth, WPS, MAC |
+| Packet Sniff | Live capture |
+| ARP Spoofer | MITM |
+| SSL Inspect | Cert info, expiry |
+
+### Pentest+
+| Module | Description |
+|--------|-------------|
+| Rev Shell | 14 shell types + TTY upgrade |
+| Metasploit | Helper one-liners |
+| CVE Scanner | CVE lookup by product |
+| Wordlist Gen | Custom wordlists |
+| Sub Takeover | CNAME takeover check |
+| JWT Tool | Decode, forge, alg:none |
+
+### Crypto / Files
+| Module | Description |
+|--------|-------------|
+| Hash+Encode | MD5, SHA, Base64, Caesar |
+| Breach Check | HIBP, DeHashed, IntelX |
+| Hash Crack | Dictionary + rainbow |
+| Steganography | LSB hide/extract PNG |
+| File+Virus | Static AV + VirusTotal |
+| Image Meta | EXIF extractor |
+
+### Recon / Extra
+| Module | Description |
+|--------|-------------|
+| **AI Chatbot** | OpenRouter — 10 models, Dolphin/Hermes/Nemotron, auto-fallback, DAN mode |
+| Shodan | Search + API |
+| **File Hider** | Hide any file in any carrier. Change .exe icon. Auto-extract launcher |
+| **Social Media** | TikTok info + mass reporter (12 platforms) |
+| **Phishing** | Built-in pages: Instagram, Facebook, Google, Discord, TikTok, Microsoft |
+| **Geo Photo** | EXIF GPS → coordinates + address + Maps links |
 
 ---
 
-## ⚠️ Disclaimer
+## DDoS methods
 
-**Usage éducatif, pentest autorisé et CTF uniquement.**  
-L'auteur n'est **pas responsable** de toute utilisation abusive.  
-Teste uniquement sur des systèmes que tu possèdes ou pour lesquels tu as une autorisation écrite.
+| Key | Method | Layer |
+|-----|--------|-------|
+| 1 | UDP Flood | L4 |
+| 2 | TCP SYN Flood | L4 |
+| 3 | HTTP GET Flood | L7 |
+| 4 | Slowloris | L7 |
+| 5 | HTTP POST Flood | L7 |
+| 6 | R.U.D.Y | L7 |
+| 7 | DNS Amplification | L7 |
+| 8 | ICMP Flood | L3 |
+| 9 | SSL Renegotiation | L7 |
+| B | HULK (infinite random GET) | L7 |
+| C | GET Flood Auto (timed) | L7 |
+| D | POST Flood Auto (timed) | L7 |
+| **E** | **ULTRA — all 11 at max threads** | **ALL** |
+
+Port is **auto-detected** from URL (`https://` → 443, `http://` → 80, explicit port kept).
 
 ---
 
-## 👤 Auteur
+## RAT system
 
-**cameleonnbss** — *signed camzzz*  
-🐙 [github.com/cameleonnbss](https://github.com/cameleonnbss)
+See [`rat/README.md`](rat/README.md) for full details.
 
+**3-step workflow:**
+1. Run `rat/c2/server.py` on your machine → get URL
+2. Run `rat/builder.py` → enter C2 URL → generates payload
+3. Victim opens payload → everything lands in `loot/<hostname>/`
+
+**What you receive:**
+- `sysinfo.txt` — OS, user, IP, admin status
+- `screenshot.png` — screen capture
+- `webcam.jpg` — webcam photo
+- `keylog.txt` — live keylog updated every 30s
+- `wifi.txt` — all wifi passwords
+- `files.txt` — Desktop/Downloads/Documents listing
+- `loot.zip` — full archive every hour
+
+---
+
+## AI Chatbot
+
+Powered by [OpenRouter](https://openrouter.ai/keys) (free tier).
+
+| Model | Notes |
+|-------|-------|
+| Gemma 4 26B | Default |
+| Dolphin Venice 24B | Zero filter |
+| Hermes 3 405B | Low-refusal |
+| Nemotron Ultra 253B | NVIDIA |
+| Llama 3.3 70B | Meta |
+
+In-chat: `/model` `/style` `/clear` `/history` `/save` `/exit`
+
+---
+
+## Disclaimer
+
+> For **authorized penetration testing, CTF competitions, and educational use only.**
+> Do not use against systems you do not own or have explicit written permission to test.
+> The author is not responsible for any misuse.
+
+**By camzzz** — [github.com/cameleonnbss](https://github.com/cameleonnbss)
