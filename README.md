@@ -9,7 +9,7 @@
  ╚═╝░░╚═╝╚══════╝╚══════╝  ╚═╝╚═╝░░╚══╝  ╚════╝░╚═╝░░╚══╝╚══════╝
 ```
 
-<h3>v5 · by camzzz · Python + Rust + C</h3>
+<h3>v5 · by camzzz · 
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20·%20Linux%20·%20Termux-2ea44f?style=flat-square)](.)
@@ -260,3 +260,5 @@ Hide any file (`.exe`, `.py`, `.sh`, `.zip`...) inside any carrier (image, PDF, 
 > The author is not responsible for any misuse.
 
 **By camzzz** — [github.com/cameleonnbss](https://github.com/cameleonnbss)
+<div align="center">
+
