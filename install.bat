@@ -1,6 +1,7 @@
 @echo off
 title camzzz Multi-Tool v5 - Installer
 color 0A
+
 echo.
 echo  ========================================
 echo   camzzz Multi-Tool v5  --  Installer
@@ -9,20 +10,19 @@ echo.
 
 python --version >nul 2>&1
 if %errorlevel% neq 0 (
-    echo  [!] Python not found. Download: https://www.python.org/downloads/
+    echo  [!] Python not found.
+    echo  Download Python:
+    echo  https://www.python.org/downloads/
     pause
     exit /b 1
 )
 
-echo  [*] Installing dependencies...
+echo  [*] Uninstalling dependencies...
 echo.
 
-pip install -r requirements.txt --break-system-packages 2>nul || pip install -r requirements.txt
+pip uninstall -y requests colorama beautifulsoup4 dnspython phonenumbers Pillow pefile cryptography flask pyngrok scapy impacket pymysql paramiko discord-webhook keyboard pyautogui opencv-python pywin32 python-magic-bin psutil
 
 echo.
 echo  [+] Done!
-echo.
-echo  Run the tool:
-echo    python multi-tooV5-fixed-v2.py
 echo.
 pause
