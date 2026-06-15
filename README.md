@@ -262,5 +262,6 @@ Hide any file (`.exe`, `.py`, `.sh`, `.zip`...) inside any carrier (image, PDF, 
 > The author is not responsible for any misuse.
 
 **By camzzz** — [github.com/cameleonnbss](https://github.com/cameleonnbss)
+**discord** : cameleonmortis_new
 <div align="center">
 
